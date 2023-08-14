@@ -1,4 +1,4 @@
-package com.aswemake.api.aswemakeapitask.common.config;
+package com.aswemake.api.aswemakeapitask.common.config.jpa;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
