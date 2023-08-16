@@ -67,10 +67,7 @@ User (사용자)
 
 ### Coupon 관련 (마트 권한 필요)
 
-``` POST /coupons: 쿠폰 생성``` <br>
 ``` GET /coupons/{id}: 쿠폰 정보 조회``` <br>
-``` PUT /coupons/{id}: 쿠폰 수정``` <br>
-``` DELETE /coupons/{id}: 쿠폰 삭제``` <br>
 
 ### Order 관련
 
