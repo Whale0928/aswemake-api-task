@@ -2,8 +2,12 @@ package com.aswemake.api.aswemakeapitask.controller;
 
 import com.aswemake.api.aswemakeapitask.domain.user.UserRepository;
 import com.aswemake.api.aswemakeapitask.domain.user.Users;
+import com.aswemake.api.aswemakeapitask.dto.GlobalResponse;
+import com.aswemake.api.aswemakeapitask.dto.users.request.LoginRequestDto;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,35 +15,47 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 
+import static java.time.LocalDateTime.now;
+import static org.springframework.http.ResponseEntity.ok;
+
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/v1/auth")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
     private final UserRepository userRepository; // 사용자 정보
 
-    // todo-일반 사용자 로그인
-    @PostMapping("/user/login")
-    public ResponseEntity<?> loginUser(/*@RequestBody LoginRequest loginRequest*/) {
-        return ResponseEntity.ok().body("User logged in successfully");
+    // TODO : 일반 사용자 로그인
+    @PostMapping("/users/login")
+    public ResponseEntity<GlobalResponse> loginUser(@RequestBody LoginRequestDto loginRequestDto, HttpSession session) {
+        return ok().body(GlobalResponse.builder()
+                .status(HttpStatus.OK)
+                .timestamp(now())
+                .message("로그인 성공")
+                .data(null)
+                .build());
     }
 
-    // todo-마켓 사용자 로그인
+    // TODO : 마켓 사용자 로그인
     @PostMapping("/market/login")
-    public ResponseEntity<?> loginMarket(String email, HttpSession session) {
+    public ResponseEntity<GlobalResponse> loginMarket(@RequestBody @Valid LoginRequestDto loginRequestDto, HttpSession session) {
         //서비스 동작 후 존재하는게 확실한 유저 반환
         // 서비스 레이어 시작
-        Users users = userRepository.findByEmail(email).get();
-        // 서비스 레이어 끝
+        String email = loginRequestDto.getEmail();
+        Users users = userRepository.findByEmail(email).orElse(null);
 
+        // 서비스 레이어 끝
         UserDetails userDetails = userDetailsService.loadUserByUsername(users.getEmail());
 
         // 사용자 인증
@@ -49,7 +65,6 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         HashMap<String, Object> userInfo = new HashMap<>();
-
         userInfo.put("session-id", session.getId());
         userInfo.put("id", users.getId());
         userInfo.put("email", users.getEmail());
@@ -58,6 +73,11 @@ public class AuthController {
 
         session.setAttribute("userInfo", userInfo);
 
-        return ResponseEntity.ok().body(userInfo);
+        return ok().body(GlobalResponse.builder()
+                .status(HttpStatus.OK)
+                .timestamp(now())
+                .message("로그인 성공")
+                .data(userInfo)
+                .build());
     }
 }
