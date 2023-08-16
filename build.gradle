@@ -16,6 +16,7 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExt
 }
 
 repositories {
@@ -52,3 +53,44 @@ tasks.named('asciidoctor') {
     inputs.dir snippetsDir
     dependsOn test
 }
+ext { // 전역 변수
+    snippetsDir = file('build/generated-snippets')
+}
+
+test {
+    outputs.dir snippetsDir
+}
+
+asciidoctor {
+    inputs.dir snippetsDir
+    configurations 'asciidoctorExt'
+
+    sources { // 특정 파일만 html로 만든다.
+        include("**/index.adoc")
+    }
+    baseDirFollowsSourceFile() // 다른 adoc 파일을 include 할 때 경로를 baseDir로 맞춘다.
+    dependsOn test
+}
+
+bootJar {
+    dependsOn asciidoctor
+    from("${asciidoctor.outputDir}") {
+        into 'static/docs'
+    }
+}
+
+
+tasks.register('cleanDocs', Delete) {
+    delete 'docs'
+}
+
+tasks.register('copyRestDocs', Copy) {
+    dependsOn asciidoctor, cleanDocs
+    from file("build/docs/asciidoc/index.html") // 복사할 파일 위치
+    into 'docs' // 경로 수정
+}
+
+build {
+    dependsOn copyRestDocs
+}
+
