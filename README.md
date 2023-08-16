@@ -54,11 +54,7 @@ User (사용자)
 ### User 관련
 
 ``` POST /auth/user/login: 일반 사용자 로그인```<br>
-``` POST /auth/market/login: 마켓 사용자 등록```<br>
-
-``` POST /users: 사용자 등록```<br>
-``` GET /users/{id}: 사용자 정보 조회```<br>
-``` PUT /users/{id}: 사용자 정보 수정```<br>
+``` POST /auth/market/login: 마켓 사용자 로그인```<br>
 
 ### Item 관련 (마트 권한 필요)
 
