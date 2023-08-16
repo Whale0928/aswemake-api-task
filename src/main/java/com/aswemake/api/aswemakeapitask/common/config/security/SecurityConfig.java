@@ -51,7 +51,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
-                                .requestMatchers(new AntPathRequestMatcher("/auth/**")).permitAll()//로그인 허용
+                                .requestMatchers(new AntPathRequestMatcher("/v1/auth/**")).permitAll()//로그인 허용
                                 //.requestMatchers(antMatcher(GET, "/market/**")).hasRole("MARKET")   //매장접근
                                 .anyRequest().authenticated()
                 )
