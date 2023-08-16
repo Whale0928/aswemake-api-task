@@ -20,4 +20,11 @@ include::api/auth/user-login.adoc[]
 include::api/auth/market-login.adoc[]
 
 
+[[Coupon]]
+== Coupon API
+
+include::api/coupon/coupon-select.adoc[]
+
+
+
 

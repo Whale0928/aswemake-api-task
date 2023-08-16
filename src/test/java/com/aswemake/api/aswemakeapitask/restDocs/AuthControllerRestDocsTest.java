@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -93,10 +94,10 @@ class AuthControllerRestDocsTest extends RestDocsSupport {
                                 fieldWithPath("message").description("응답 메시지"),
                                 fieldWithPath("data").description("응답 데이터"),
                                 fieldWithPath("data.role").description("역할"),
-                                fieldWithPath("data.id").description("사용자 아이디").type(Long.class),
+                                fieldWithPath("data.id").description("사용자 아이디").type(JsonFieldType.NUMBER),
                                 fieldWithPath("data.email").description("사용자 이메일"),
                                 fieldWithPath("data.name").description("사용자 이름"),
-                                fieldWithPath("data.sessionId").description("세션 아이디").type(String.class)
+                                fieldWithPath("data.sessionId").description("세션 아이디").type(JsonFieldType.STRING)
                         )
                 ));
     }

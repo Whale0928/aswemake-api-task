@@ -1,0 +1,14 @@
+[[coupon-select]]
+=== 쿠폰 조회
+
+==== 쿠폰 조회 요청 정보
+
+include::{snippets}/coupon/select/http-request.adoc[]
+include::{snippets}/coupon/select/path-parameters.adoc[]
+
+==== 쿠폰 조회 응답
+
+include::{snippets}/coupon/select/http-response.adoc[]
+include::{snippets}/coupon/select/response-fields.adoc[]
+
+[[coupon-select]]
