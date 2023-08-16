@@ -52,7 +52,7 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/auth/**")).permitAll()//로그인 허용
-                                //.requestMatchers(antMatcher(GET, "/auth/market/login")).hasRole("MARKET")   //매장접근
+                                //.requestMatchers(antMatcher(GET, "/market/**")).hasRole("MARKET")   //매장접근
                                 .anyRequest().authenticated()
                 )
                 .build();

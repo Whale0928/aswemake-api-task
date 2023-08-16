@@ -11,7 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,15 +26,14 @@ public class AuthController {
     private final UserDetailsService userDetailsService;
     private final UserRepository userRepository; // 사용자 정보
 
-    // 일반 사용자 로그인
+    // todo-일반 사용자 로그인
     @PostMapping("/user/login")
     public ResponseEntity<?> loginUser(/*@RequestBody LoginRequest loginRequest*/) {
         return ResponseEntity.ok().body("User logged in successfully");
     }
 
-    // 마켓 사용자 로그인
-    //@PostMapping("/market/login")
-    @GetMapping("/market/login")
+    // todo-마켓 사용자 로그인
+    @PostMapping("/market/login")
     public ResponseEntity<?> loginMarket(String email, HttpSession session) {
         //서비스 동작 후 존재하는게 확실한 유저 반환
         // 서비스 레이어 시작
@@ -52,11 +50,11 @@ public class AuthController {
 
         HashMap<String, Object> userInfo = new HashMap<>();
 
-        userInfo.put("session-id",session.getId());
-        userInfo.put("id",users.getId());
-        userInfo.put("email",users.getEmail());
-        userInfo.put("name",users.getName());
-        userInfo.put("role",users.getRole());
+        userInfo.put("session-id", session.getId());
+        userInfo.put("id", users.getId());
+        userInfo.put("email", users.getEmail());
+        userInfo.put("name", users.getName());
+        userInfo.put("role", users.getRole());
 
         session.setAttribute("userInfo", userInfo);
 
