@@ -39,6 +39,8 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.4'
+
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
 tasks.named('test') {
