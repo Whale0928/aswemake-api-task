@@ -1,9 +1,11 @@
 package com.aswemake.api.aswemakeapitask.controller;
 
 import com.aswemake.api.aswemakeapitask.domain.user.UserRepository;
+import com.aswemake.api.aswemakeapitask.domain.user.UserRole;
 import com.aswemake.api.aswemakeapitask.domain.user.Users;
 import com.aswemake.api.aswemakeapitask.dto.GlobalResponse;
 import com.aswemake.api.aswemakeapitask.dto.users.request.LoginRequestDto;
+import com.aswemake.api.aswemakeapitask.dto.users.response.UserLoginInfo;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +23,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-
 import static java.time.LocalDateTime.now;
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -39,11 +39,22 @@ public class AuthController {
     // TODO : 일반 사용자 로그인
     @PostMapping("/users/login")
     public ResponseEntity<GlobalResponse> loginUser(@RequestBody LoginRequestDto loginRequestDto, HttpSession session) {
+
+        UserLoginInfo userInfo = UserLoginInfo.builder()
+                .id(1L)
+                .email("userEmail@Gmail.com")
+                .name("김 사용자")
+                .role(UserRole.USER)
+                .sessionId("sessionId-test-1234")
+                .build();
+
+        session.setAttribute("userInfo", userInfo);
+
         return ok().body(GlobalResponse.builder()
                 .status(HttpStatus.OK)
                 .timestamp(now())
                 .message("로그인 성공")
-                .data(null)
+                .data(userInfo)
                 .build());
     }
 
@@ -64,12 +75,13 @@ public class AuthController {
         // 인증 정보 저장
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        HashMap<String, Object> userInfo = new HashMap<>();
-        userInfo.put("session-id", session.getId());
-        userInfo.put("id", users.getId());
-        userInfo.put("email", users.getEmail());
-        userInfo.put("name", users.getName());
-        userInfo.put("role", users.getRole());
+        UserLoginInfo userInfo = UserLoginInfo.builder()
+                .id(1L)
+                .email(users.getEmail())
+                .name(users.getName())
+                .role(users.getRole())
+                .sessionId("sessionId-test-1234")
+                .build();
 
         session.setAttribute("userInfo", userInfo);
 

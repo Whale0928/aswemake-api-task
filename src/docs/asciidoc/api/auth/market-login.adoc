@@ -1,0 +1,14 @@
+[[market-login]]
+=== 마켓 로그인
+
+==== 마켓 로그인 요청 정보
+
+include::{snippets}/auth/login-market/http-request.adoc[]
+include::{snippets}/auth/login-market/request-fields.adoc[]
+
+==== 마켓 로그인 응답
+
+include::{snippets}/auth/login-market/http-response.adoc[]
+include::{snippets}/auth/login-market/response-fields.adoc[]
+
+[[market-login]]
