@@ -2,6 +2,7 @@ package com.aswemake.api.aswemakeapitask.restDocs;
 
 import com.aswemake.api.aswemakeapitask.controller.OrdersController;
 import com.aswemake.api.aswemakeapitask.domain.orders.OrderStatus;
+import com.aswemake.api.aswemakeapitask.dto.orders.request.OrderCalculateTotalPriceRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.orders.request.OrderCreateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderCreateResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderItemDto;
@@ -73,6 +74,18 @@ class OrdersControllerRestDocsTest extends RestDocsSupport {
                 .collect(Collectors.toList());
     }
 
+    private List<OrderCalculateTotalPriceRequestDto.OrderItemRequest> createOrderItemsByTotalPrice() {
+        return Stream.of(
+                        new AbstractMap.SimpleEntry<>(1L, 5),
+                        new AbstractMap.SimpleEntry<>(2L, 10)
+                )
+                .map(entry -> OrderCalculateTotalPriceRequestDto.OrderItemRequest.builder()
+                        .itemId(entry.getKey())
+                        .quantity(entry.getValue())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
     @Test
     @DisplayName("주문 생성")
     void createOrder() throws Exception {
@@ -95,7 +108,7 @@ class OrdersControllerRestDocsTest extends RestDocsSupport {
                 .orderDate(now())
                 .build();
 
-        mockMvc.perform(post("/v1/orders/{fundingId}", 1L)
+        mockMvc.perform(post("/v1/orders")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto))
                         .session(mockSession))
@@ -104,9 +117,6 @@ class OrdersControllerRestDocsTest extends RestDocsSupport {
                 .andDo(document("orders/create-order",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
-                        pathParameters(
-                                parameterWithName("fundingId").description("펀딩 아이디")
-                        ),
                         requestFields(
                                 fieldWithPath("orderItems").description("주문 상품 목록"),
                                 fieldWithPath("orderItems[].itemId").description("주문 상품 아이디"),
@@ -127,7 +137,6 @@ class OrdersControllerRestDocsTest extends RestDocsSupport {
                         )
                 ));
     }
-
 
     @Test
     @DisplayName("주문 조회")
@@ -182,6 +191,58 @@ class OrdersControllerRestDocsTest extends RestDocsSupport {
                                 fieldWithPath("data.orderItems[].name").description("상품명"),
                                 fieldWithPath("data.orderItems[].quantity").description("상품 수량"),
                                 fieldWithPath("data.orderItems[].price").description("상품 단가")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("주문 총 금액 계산")
+    void calculateTotalPrice() throws Exception {
+        OrderCalculateTotalPriceRequestDto requestDto = OrderCalculateTotalPriceRequestDto.builder()
+                .orderItems(createOrderItemsByTotalPrice())
+                .build();
+
+        mockMvc.perform(get("/v1/orders/total")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestDto)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("orders/select-total-price",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("orderItems").description("주문 상품 목록"),
+                                fieldWithPath("orderItems[].itemId").description("주문 상품 아이디"),
+                                fieldWithPath("orderItems[].quantity").description("주문 상품 수량")
+                        ),
+                        responseFields(
+                                fieldWithPath("status").ignored(),
+                                fieldWithPath("timestamp").ignored(),
+                                fieldWithPath("message").ignored(),
+                                fieldWithPath("data").description("총 구매 금액").type(JsonFieldType.NUMBER)
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("결제 금액 계산")
+    void calculatePaymentPrice() throws Exception {
+        Long id = 1L;
+
+        mockMvc.perform(get("/v1/orders/{id}/amount", id))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("orders/select-payment-price",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("id").description("생성된 주문 아이디")
+                        ),
+                        responseFields(
+                                fieldWithPath("status").ignored(),
+                                fieldWithPath("timestamp").ignored(),
+                                fieldWithPath("message").ignored(),
+                                fieldWithPath("data").description("총 결제 금액").type(JsonFieldType.NUMBER)
                         )
                 ));
     }

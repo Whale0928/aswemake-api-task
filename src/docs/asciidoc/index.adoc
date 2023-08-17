@@ -39,3 +39,5 @@ include::api/item/items-select-by-time.adoc[]
 
 include::api/orders/orders-create.adoc[]
 include::api/orders/orders-select.adoc[]
+include::api/orders/orders-select-total-price.adoc[]
+include::api/orders/orders-select-payment-price.adoc[]

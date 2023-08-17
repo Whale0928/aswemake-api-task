@@ -3,6 +3,7 @@ package com.aswemake.api.aswemakeapitask.controller;
 
 import com.aswemake.api.aswemakeapitask.domain.orders.OrderStatus;
 import com.aswemake.api.aswemakeapitask.dto.GlobalResponse;
+import com.aswemake.api.aswemakeapitask.dto.orders.request.OrderCalculateTotalPriceRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.orders.request.OrderCreateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderCreateResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderItemDto;
@@ -33,9 +34,8 @@ import static java.util.Arrays.asList;
 public class OrdersController {
 
     // TODO : POST /orders: 주문 생성
-    @PostMapping("/{fundingId}")
-    public ResponseEntity<GlobalResponse> createOrder(@PathVariable Long fundingId
-            , @Valid @RequestBody OrderCreateRequestDto orderCreateRequestDto
+    @PostMapping
+    public ResponseEntity<GlobalResponse> createOrder(@Valid @RequestBody OrderCreateRequestDto orderCreateRequestDto
             , HttpSession session) {
 
         // 세션에서 사용자 정보 가져오기
@@ -90,15 +90,17 @@ public class OrdersController {
         return GlobalResponse.ok("주문을 조회하였습니다.", responseDto);
     }
 
-    // TODO : GET /orders/{id}/total: 주문에 대한 총 금액 계산
-    @GetMapping("{id}/total")
-    public ResponseEntity<GlobalResponse> calculateTotalPrice() {
-        return null;
+    // TODO : GET /orders/total: 주문에 대한 총 금액 계산 - 결제전
+    @GetMapping("/total")
+    public ResponseEntity<GlobalResponse> calculateTotalPrice(@Valid @RequestBody OrderCalculateTotalPriceRequestDto orderCalculateTotalPriceRequestDto) {
+        Integer totalAmount = 150_000;
+        return GlobalResponse.ok("주문에 대한 총 금액 : ", totalAmount);
     }
 
-    @GetMapping("{id}/payment")
-    public ResponseEntity<GlobalResponse> calculatePaymentPrice() {
-        // TODO : GET /orders/{id}/payment: 주문에 대한 필요 결제 금액 계산
-        return null;
+    // TODO : GET /orders/{id}/amount: 주문에 대한 필요 결제 금액 계산 - 결제 후
+    @GetMapping("{id}/amount")
+    public ResponseEntity<GlobalResponse> calculatePaymentPrice(@PathVariable Long id) {
+        Integer totalAmount = 150_000;
+        return GlobalResponse.ok("주문에 대한 총 금액 : ", totalAmount);
     }
 }

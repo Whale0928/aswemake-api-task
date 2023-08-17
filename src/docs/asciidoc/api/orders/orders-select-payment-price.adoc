@@ -1,0 +1,14 @@
+[[orders-payment-total-price]]
+=== 상품 결제 금액 조회
+
+==== 상품 결제 금액 조회 요청 정보
+
+include::{snippets}/orders/select-payment-price/http-request.adoc[]
+include::{snippets}/orders/select-payment-price/path-parameters.adoc[]
+
+==== 상품 결제 금액 조회 응답 정보
+
+include::{snippets}/orders/select-payment-price/http-response.adoc[]
+include::{snippets}/orders/select-payment-price/response-fields.adoc[]
+
+[[orders-payment-total-price]]
