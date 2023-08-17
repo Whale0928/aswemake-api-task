@@ -6,6 +6,7 @@ import com.aswemake.api.aswemakeapitask.dto.item.request.ItemCreateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.item.request.ItemUpdateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemCreateResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemDeleteResponseDto;
+import com.aswemake.api.aswemakeapitask.dto.item.response.ItemPriceAtTimeResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemSelectResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemUpdateResponseDto;
 import jakarta.validation.Valid;
@@ -96,8 +97,18 @@ public class ItemController {
 
     // TODO : GET /items/{id}/price?date=YYYY-MM-DD: 특정 시점의 상품 가격 조회
     @GetMapping("{id}/price")
-    public ResponseEntity<GlobalResponse> selectItemPrice(@PathVariable Long id, String date) {
-        return null;
+    public ResponseEntity<GlobalResponse> selectItemPriceAtTime(@PathVariable Long id, String date) {
+        return ok(GlobalResponse.builder()
+                .status(HttpStatus.OK)
+                .message("조회 성공")
+                .data(ItemPriceAtTimeResponseDto.builder()
+                        .id(1L)
+                        .name("테스트 상품_AAA")
+                        .date("2021-10-10")
+                        .price(8500)
+                        .currentPrice(11000)
+                        .build())
+                .build());
     }
 
 }
