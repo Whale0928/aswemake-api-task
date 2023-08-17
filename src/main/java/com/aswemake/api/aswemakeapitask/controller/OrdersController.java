@@ -5,6 +5,8 @@ import com.aswemake.api.aswemakeapitask.domain.orders.OrderStatus;
 import com.aswemake.api.aswemakeapitask.dto.GlobalResponse;
 import com.aswemake.api.aswemakeapitask.dto.orders.request.OrderCreateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderCreateResponseDto;
+import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderItemDto;
+import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderSelectResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.users.response.UserLoginInfo;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -19,7 +21,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 import static java.time.LocalDateTime.now;
+import static java.util.Arrays.asList;
 
 @RequiredArgsConstructor
 @RestController
@@ -58,8 +63,31 @@ public class OrdersController {
 
     // TODO : GET /orders/{id}: 주문 정보 조회
     @GetMapping("{id}")
-    public ResponseEntity<GlobalResponse> selectOrder() {
-        return null;
+    public ResponseEntity<GlobalResponse> selectOrder(@PathVariable Long id, HttpSession session) {
+        List<OrderItemDto> orderItemDtoList = asList(OrderItemDto.builder()
+                        .id(1L)
+                        .name("name")
+                        .quantity(1)
+                        .price(1L)
+                        .build(),
+                OrderItemDto.builder()
+                        .id(1L)
+                        .name("name")
+                        .quantity(1)
+                        .price(1L)
+                        .build());
+
+        OrderSelectResponseDto responseDto = OrderSelectResponseDto.builder()
+                .orderCode("orderCode")
+                .userId(1L)
+                .userName("userName")
+                .status(OrderStatus.PAID)
+                .totalAmount(150_000L)
+                .deliveryFee(3_000L)
+                .orderItems(orderItemDtoList)
+                .build();
+
+        return GlobalResponse.ok("주문을 조회하였습니다.", responseDto);
     }
 
     // TODO : GET /orders/{id}/total: 주문에 대한 총 금액 계산

@@ -38,3 +38,4 @@ include::api/item/items-select-by-time.adoc[]
 == Orders API
 
 include::api/orders/orders-create.adoc[]
+include::api/orders/orders-select.adoc[]

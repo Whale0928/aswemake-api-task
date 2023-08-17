@@ -1,0 +1,14 @@
+[[orders-select]]
+=== 주문 단건 조회
+
+==== 주문 단건 조회 요청 정보
+
+include::{snippets}/orders/select-order/http-request.adoc[]
+include::{snippets}/orders/select-order/path-parameters.adoc[]
+
+==== 주문 단건 조회 응답 정보
+
+include::{snippets}/orders/select-order/http-response.adoc[]
+include::{snippets}/orders/select-order/response-fields.adoc[]
+
+[[orders-select]]

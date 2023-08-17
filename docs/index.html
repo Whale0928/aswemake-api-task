@@ -476,6 +476,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#Orders">5. Orders API</a>
 <ul class="sectlevel2">
 <li><a href="#orders-create">5.1. 주문 생성</a></li>
+<li><a href="#orders-select">5.2. 주문 단건 조회</a></li>
 </ul>
 </li>
 </ul>
@@ -614,7 +615,7 @@ Content-Length: 270
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 17, 22, 0, 49, 121138000 ],
+  "timestamp" : [ 2023, 8, 17, 23, 9, 28, 809071000 ],
   "message" : "로그인 성공",
   "data" : {
     "role" : "USER",
@@ -739,11 +740,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 264
+Content-Length: 265
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 17, 22, 0, 49, 66823000 ],
+  "timestamp" : [ 2023, 8, 17, 23, 9, 28, 738156000 ],
   "message" : "로그인 성공",
   "data" : {
     "role" : "MARKET",
@@ -856,7 +857,7 @@ Content-Length: 339
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 17, 22, 0, 49, 144281000 ],
+  "timestamp" : [ 2023, 8, 17, 23, 9, 28, 833710000 ],
   "message" : "쿠폰 정보 조회 성공",
   "data" : {
     "id" : 1,
@@ -1672,14 +1673,14 @@ Content-Length: 312
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 17, 22, 0, 49, 256240000 ],
+  "timestamp" : [ 2023, 8, 17, 23, 9, 28, 953962000 ],
   "message" : "주문이 생성되었습니다.",
   "data" : {
     "id" : 1,
     "orderCode" : "2021090001-market-AA",
     "orderStatus" : "PAID",
     "totalAmount" : 150000,
-    "orderDate" : [ 2023, 8, 17, 22, 0, 49, 256215000 ]
+    "orderDate" : [ 2023, 8, 17, 23, 9, 28, 953942000 ]
   }
 }</code></pre>
 </div>
@@ -1737,13 +1738,169 @@ Content-Length: 312
 </table>
 </div>
 </div>
+<div class="sect2">
+<h3 id="orders-select"><a class="link" href="#orders-select">5.2. 주문 단건 조회</a></h3>
+<div class="sect3">
+<h4 id="_주문_단건_조회_요청_정보"><a class="link" href="#_주문_단건_조회_요청_정보">5.2.1. 주문 단건 조회 요청 정보</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/orders/1 HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 7. /v1/orders/{id}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주문 아이디</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_주문_단건_조회_응답_정보"><a class="link" href="#_주문_단건_조회_응답_정보">5.2.2. 주문 단건 조회 응답 정보</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 497
+
+{
+  "status" : "OK",
+  "timestamp" : [ 2023, 8, 17, 23, 9, 28, 968442000 ],
+  "message" : "주문을 조회하였습니다.",
+  "data" : {
+    "orderCode" : "orderCode",
+    "userId" : 1,
+    "userName" : "userName",
+    "status" : "PAID",
+    "totalAmount" : 150000,
+    "deliveryFee" : 3000,
+    "orderItems" : [ {
+      "id" : 1,
+      "name" : "name",
+      "quantity" : 1,
+      "price" : 1
+    }, {
+      "id" : 1,
+      "name" : "name",
+      "quantity" : 1,
+      "price" : 1
+    } ]
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_fields_10"><a class="link" href="#_response_fields_10">5.2.3. Response Fields</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Optional</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderCode</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주문 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.userId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주문 고객</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.userName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주문 고객명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주문 상태</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.totalAmount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">총 구매 금액</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.deliveryFee</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">배송비</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderItems</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주문 상품 목록</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderItems[].id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderItems[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderItems[].quantity</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 수량</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderItems[].price</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 단가</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-08-17 22:02:20 +0900
+Last updated 2023-08-17 22:59:54 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
