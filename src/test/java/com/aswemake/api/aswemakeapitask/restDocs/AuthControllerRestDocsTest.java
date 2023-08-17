@@ -89,10 +89,10 @@ class AuthControllerRestDocsTest extends RestDocsSupport {
                                 fieldWithPath("password").description("사용자 비밀번호")
                         ),
                         responseFields(
-                                fieldWithPath("status").description("HTTP 상태코드"),
-                                fieldWithPath("timestamp").description("응답 시간"),
-                                fieldWithPath("message").description("응답 메시지"),
-                                fieldWithPath("data").description("응답 데이터"),
+                                fieldWithPath("status").ignored(),
+                                fieldWithPath("timestamp").ignored(),
+                                fieldWithPath("message").ignored(),
+                                fieldWithPath("data").ignored(),
                                 fieldWithPath("data.role").description("역할"),
                                 fieldWithPath("data.id").description("사용자 아이디").type(JsonFieldType.NUMBER),
                                 fieldWithPath("data.email").description("사용자 이메일"),
@@ -135,7 +135,6 @@ class AuthControllerRestDocsTest extends RestDocsSupport {
                 .data(userLoginInfo)
                 .build();
 
-
         when(userRepository.findByEmail(email)).thenReturn(Optional.ofNullable(users));
 
         UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
@@ -158,10 +157,10 @@ class AuthControllerRestDocsTest extends RestDocsSupport {
                                 fieldWithPath("password").description("마켓 비밀번호")
                         ),
                         responseFields(
-                                fieldWithPath("status").description("HTTP 상태코드"),
-                                fieldWithPath("timestamp").description("응답 시간"),
-                                fieldWithPath("message").description("응답 메시지"),
-                                fieldWithPath("data").description("응답 데이터"),
+                                fieldWithPath("status").ignored(),
+                                fieldWithPath("timestamp").ignored(),
+                                fieldWithPath("message").ignored(),
+                                fieldWithPath("data").ignored(),
                                 fieldWithPath("data.role").description("역할"),
                                 fieldWithPath("data.id").description("마켓 아이디").type(Long.class),
                                 fieldWithPath("data.email").description("마켓 이메일"),

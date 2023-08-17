@@ -32,3 +32,9 @@ include::api/item/items-created.adoc[]
 include::api/item/items-update.adoc[]
 include::api/item/items-delete.adoc[]
 include::api/item/items-select-by-time.adoc[]
+
+
+[[Orders]]
+== Orders API
+
+include::api/orders/orders-create.adoc[]

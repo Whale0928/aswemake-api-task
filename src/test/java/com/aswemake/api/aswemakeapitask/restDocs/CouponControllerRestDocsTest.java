@@ -72,10 +72,10 @@ class CouponControllerRestDocsTest extends RestDocsSupport {
                                 parameterWithName("id").description("쿠폰 아이디")
                         ),
                         responseFields(
-                                fieldWithPath("status").description("HTTP 상태코드"),
-                                fieldWithPath("timestamp").description("응답 시간"),
-                                fieldWithPath("message").description("응답 메시지"),
-                                fieldWithPath("data").description("응답 데이터"),
+                                fieldWithPath("status").ignored(),
+                                fieldWithPath("timestamp").ignored(),
+                                fieldWithPath("message").ignored(),
+                                fieldWithPath("data").ignored(),
                                 fieldWithPath("data.id").description("쿠폰 아이디").type(JsonFieldType.NUMBER),
                                 fieldWithPath("data.name").description("쿠폰 이름"),
                                 fieldWithPath("data.couponType").description("쿠폰 적용 방법 (비율 또는 고정)"),

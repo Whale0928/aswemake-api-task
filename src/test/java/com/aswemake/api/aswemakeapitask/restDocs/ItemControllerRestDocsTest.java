@@ -79,10 +79,10 @@ class ItemControllerRestDocsTest extends RestDocsSupport {
                                 parameterWithName("id").description("상품 아이디")
                         ),
                         responseFields(
-                                fieldWithPath("status").description("HTTP 상태코드"),
-                                fieldWithPath("timestamp").description("응답 시간"),
-                                fieldWithPath("message").description("응답 메시지"),
-                                fieldWithPath("data").description("응답 데이터"),
+                                fieldWithPath("status").ignored(),
+                                fieldWithPath("timestamp").ignored(),
+                                fieldWithPath("message").ignored(),
+                                fieldWithPath("data").ignored(),
                                 fieldWithPath("data.id").description("상품 아이디").type(JsonFieldType.NUMBER),
                                 fieldWithPath("data.name").description("상품 이름").type(JsonFieldType.STRING),
                                 fieldWithPath("data.price").description("상품 단가 가격").type(JsonFieldType.NUMBER),
@@ -133,10 +133,10 @@ class ItemControllerRestDocsTest extends RestDocsSupport {
                                 fieldWithPath("stockQuantity").description("상품 재고 수량")
                         ),
                         responseFields(
-                                fieldWithPath("status").description("HTTP 상태코드"),
-                                fieldWithPath("timestamp").description("응답 시간"),
-                                fieldWithPath("message").description("응답 메시지"),
-                                fieldWithPath("data").description("응답 데이터"),
+                                fieldWithPath("status").ignored(),
+                                fieldWithPath("timestamp").ignored(),
+                                fieldWithPath("message").ignored(),
+                                fieldWithPath("data").ignored(),
                                 fieldWithPath("data.id").description("생성된 상품 아이디").type(JsonFieldType.NUMBER),
                                 fieldWithPath("data.name").description("생성된 상품 이름").type(JsonFieldType.STRING),
                                 fieldWithPath("data.price").description("생성된 상품 단가 가격").type(JsonFieldType.NUMBER),
@@ -184,10 +184,10 @@ class ItemControllerRestDocsTest extends RestDocsSupport {
                                 fieldWithPath("price").description("변경 할 가격")
                         ),
                         responseFields(
-                                fieldWithPath("status").description("HTTP 상태코드"),
-                                fieldWithPath("timestamp").description("응답 시간"),
-                                fieldWithPath("message").description("응답 메시지"),
-                                fieldWithPath("data").description("응답 데이터"),
+                                fieldWithPath("status").ignored(),
+                                fieldWithPath("timestamp").ignored(),
+                                fieldWithPath("message").ignored(),
+                                fieldWithPath("data").ignored(),
                                 fieldWithPath("data.id").description("수정 상품 아이디").type(JsonFieldType.NUMBER),
                                 fieldWithPath("data.name").description("수정 상품 이름"),
                                 fieldWithPath("data.beforePrice").description("수정 전 가격").type(JsonFieldType.NUMBER),
@@ -226,10 +226,10 @@ class ItemControllerRestDocsTest extends RestDocsSupport {
                                 parameterWithName("id").description("삭제 대상 상품 아이디")
                         ),
                         responseFields(
-                                fieldWithPath("status").description("HTTP 상태코드"),
-                                fieldWithPath("timestamp").description("응답 시간"),
-                                fieldWithPath("message").description("응답 메시지"),
-                                fieldWithPath("data").description("응답 데이터"),
+                                fieldWithPath("status").ignored(),
+                                fieldWithPath("timestamp").ignored(),
+                                fieldWithPath("message").ignored(),
+                                fieldWithPath("data").ignored(),
                                 fieldWithPath("data.id").description("삭제 상품 아이디").type(JsonFieldType.NUMBER),
                                 fieldWithPath("data.name").description("삭제 상품 이름"),
                                 fieldWithPath("data.remainingStockQuantity").description("삭제 시점 잔여 재고 수량"),
@@ -271,10 +271,10 @@ class ItemControllerRestDocsTest extends RestDocsSupport {
                                 parameterWithName("id").description("상품 아이디")
                         ),
                         responseFields(
-                                fieldWithPath("status").description("HTTP 상태코드"),
-                                fieldWithPath("timestamp").description("응답 시간"),
-                                fieldWithPath("message").description("응답 메시지"),
-                                fieldWithPath("data").description("응답 데이터"),
+                                fieldWithPath("status").ignored(),
+                                fieldWithPath("timestamp").ignored(),
+                                fieldWithPath("message").ignored(),
+                                fieldWithPath("data").ignored(),
                                 fieldWithPath("data.id").description("상품 아이디").type(JsonFieldType.NUMBER),
                                 fieldWithPath("data.name").description("상품 이름").type(JsonFieldType.STRING),
                                 fieldWithPath("data.date").description("조회 기준 시점").type(JsonFieldType.STRING),

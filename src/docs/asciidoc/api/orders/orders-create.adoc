@@ -1,0 +1,15 @@
+[[orders-create]]
+=== 주문 생성
+
+==== 주문 생성 요청 정보
+
+include::{snippets}/orders/create-order/http-request.adoc[]
+include::{snippets}/orders/create-order/path-parameters.adoc[]
+include::{snippets}/orders/create-order/request-fields.adoc[]
+
+==== 주문 생성 응답 정보
+
+include::{snippets}/orders/create-order/http-response.adoc[]
+include::{snippets}/orders/create-order/response-fields.adoc[]
+
+[[orders-create]]

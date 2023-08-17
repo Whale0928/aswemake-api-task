@@ -28,6 +28,8 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -98,18 +100,21 @@ class OrdersControllerRestDocsTest extends RestDocsSupport {
                 .andDo(document("orders/create-order",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("fundingId").description("펀딩 아이디")
+                        ),
                         requestFields(
                                 fieldWithPath("orderItems").description("주문 상품 목록"),
                                 fieldWithPath("orderItems[].itemId").description("주문 상품 아이디"),
                                 fieldWithPath("orderItems[].quantity").description("주문 상품 수량"),
-                                fieldWithPath("coupons").description("사용된 쿠폰 아이디"),
-                                fieldWithPath("deliveryFee").description("사용자 비밀번호")
+                                fieldWithPath("coupons").description("사용 된 쿠폰 아이디").optional(),
+                                fieldWithPath("deliveryFee").description("배송비")
                         ),
                         responseFields(
-                                fieldWithPath("status").description("HTTP 상태코드"),
-                                fieldWithPath("timestamp").description("응답 시간"),
-                                fieldWithPath("message").description("응답 메시지"),
-                                fieldWithPath("data").description("응답 데이터"),
+                                fieldWithPath("status").ignored(),
+                                fieldWithPath("timestamp").ignored(),
+                                fieldWithPath("message").ignored(),
+                                fieldWithPath("data").ignored(),
                                 fieldWithPath("data.id").description("주문 아이디").type(JsonFieldType.NUMBER),
                                 fieldWithPath("data.orderCode").description("주문 번호 ( 비지니스_키 ) "),
                                 fieldWithPath("data.orderStatus").description("주문 상태"),

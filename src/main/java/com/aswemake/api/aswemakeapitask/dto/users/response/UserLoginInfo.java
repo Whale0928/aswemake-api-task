@@ -2,6 +2,7 @@ package com.aswemake.api.aswemakeapitask.dto.users.response;
 
 
 import com.aswemake.api.aswemakeapitask.domain.user.UserRole;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,7 @@ public class UserLoginInfo {
     private String name;
     private String sessionId;
 
+    @JsonIgnore
     public boolean isEmpty() {
         return this.id == null;
     }
