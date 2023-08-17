@@ -28,6 +28,9 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Orders extends BaseEntity {
 
+    //주문 번호 (비지니스 키)
+    private String orderCode;
+
     // 주문한 사용자 정보
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

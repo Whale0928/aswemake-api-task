@@ -15,23 +15,23 @@ public class GlobalResponse {
     String message;
     Object data;
 
-    public static ResponseEntity<Object> ok(Object data) {
+    public static ResponseEntity<GlobalResponse> ok(Object data) {
         return buildResponse(HttpStatus.OK, "성공", data);
     }
 
-    public static ResponseEntity<Object> ok(String message, Object data) {
+    public static ResponseEntity<GlobalResponse> ok(String message, Object data) {
         return buildResponse(HttpStatus.OK, message, data);
     }
 
-    public static ResponseEntity<Object> fail(Object data) {
+    public static ResponseEntity<GlobalResponse> fail(Object data) {
         return buildResponse(HttpStatus.BAD_REQUEST, "실패", data);
     }
 
-    public static ResponseEntity<Object> fail(String message, Object data) {
+    public static ResponseEntity<GlobalResponse> fail(String message, Object data) {
         return buildResponse(HttpStatus.BAD_REQUEST, message, data);
     }
 
-    private static ResponseEntity<Object> buildResponse(HttpStatus status, String message, Object data) {
+    private static ResponseEntity<GlobalResponse> buildResponse(HttpStatus status, String message, Object data) {
         return ResponseEntity.status(status).body(GlobalResponse.builder()
                 .status(status)
                 .timestamp(LocalDateTime.now())

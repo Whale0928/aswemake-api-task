@@ -1,8 +1,10 @@
 package com.aswemake.api.aswemakeapitask.controller;
 
 
+import com.aswemake.api.aswemakeapitask.domain.orders.OrderStatus;
 import com.aswemake.api.aswemakeapitask.dto.GlobalResponse;
 import com.aswemake.api.aswemakeapitask.dto.orders.request.OrderCreateRequestDto;
+import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderCreateResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.users.response.UserLoginInfo;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static java.time.LocalDateTime.now;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/orders")
@@ -28,7 +32,6 @@ public class OrdersController {
     public ResponseEntity<GlobalResponse> createOrder(@PathVariable Long fundingId
             , @Valid @RequestBody OrderCreateRequestDto orderCreateRequestDto
             , HttpSession session) {
-
 
         // 세션에서 사용자 정보 가져오기
         UserLoginInfo userInfo = (UserLoginInfo) session.getAttribute("userInfo");
@@ -43,11 +46,13 @@ public class OrdersController {
         }
 
         // 주문 생성에 성공한 경우 응답 반환
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(GlobalResponse.builder()
-                        .status(HttpStatus.CREATED)
-                        .message("주문 생성 성공")
-                        .data(null)
+        return GlobalResponse.ok("주문이 생성되었습니다.",
+                OrderCreateResponseDto.builder()
+                        .id(1L)
+                        .orderCode("2021090001-market-AA")
+                        .orderStatus(OrderStatus.PAID)
+                        .totalAmount(150_000L)
+                        .orderDate(now())
                         .build());
     }
 
