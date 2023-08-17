@@ -1,0 +1,14 @@
+[[items-delete]]
+=== 상품 삭제
+
+==== 상품 삭제 요청 정보
+
+include::{snippets}/items/delete/http-request.adoc[]
+include::{snippets}/items/delete/path-parameters.adoc[]
+
+==== 상품 삭제 정보
+
+include::{snippets}/items/delete/http-response.adoc[]
+include::{snippets}/items/delete/response-fields.adoc[]
+
+[[items-delete]]

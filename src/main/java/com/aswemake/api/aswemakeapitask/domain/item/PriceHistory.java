@@ -2,6 +2,8 @@ package com.aswemake.api.aswemakeapitask.domain.item;
 
 import com.aswemake.api.aswemakeapitask.common.entity.BaseEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -27,6 +29,10 @@ public class PriceHistory extends BaseEntity {
 
     // 해당 시점에서의 상품 가격
     private Long price;
+
+    //기존 대비 증가 여부
+    @Enumerated(EnumType.STRING)
+    private PriceChangeStatus priceChangeStatus;
 
     // 가격이 변경된 날짜 및 시간
     private LocalDateTime changedDate;

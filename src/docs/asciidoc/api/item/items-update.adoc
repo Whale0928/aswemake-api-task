@@ -1,0 +1,15 @@
+[[items-update]]
+=== 상품 가격 수정
+
+==== 상품 가격 수정 요청 정보
+
+include::{snippets}/items/update/http-request.adoc[]
+include::{snippets}/items/update/path-parameters.adoc[]
+include::{snippets}/items/update/request-fields.adoc[]
+
+==== 상품 가격 수정 응답 정보
+
+include::{snippets}/items/update/http-response.adoc[]
+include::{snippets}/items/update/response-fields.adoc[]
+
+[[items-update]]

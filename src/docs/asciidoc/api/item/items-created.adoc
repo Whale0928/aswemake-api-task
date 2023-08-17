@@ -1,0 +1,14 @@
+[[items-created]]
+=== 상품 생성
+
+==== 상품 생성 요청 정보
+
+include::{snippets}/items/created/http-request.adoc[]
+include::{snippets}/items/created/request-fields.adoc[]
+
+==== 상품 생성 응답
+
+include::{snippets}/items/created/http-response.adoc[]
+include::{snippets}/items/created/response-fields.adoc[]
+
+[[items-created]]

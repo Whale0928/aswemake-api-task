@@ -1,0 +1,14 @@
+[[orders-select-total-price]]
+=== 상품 금액 조회
+
+==== 상품 금액 조회 요청 정보
+
+include::{snippets}/orders/select-total-price/http-request.adoc[]
+include::{snippets}/orders/select-total-price/request-fields.adoc[]
+
+==== 상품 금액 조회 응답 정보
+
+include::{snippets}/orders/select-total-price/http-response.adoc[]
+include::{snippets}/orders/select-total-price/response-fields.adoc[]
+
+[[orders-select-total-price]]

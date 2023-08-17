@@ -26,12 +26,14 @@ public class Item extends BaseEntity {
     private String name;
     // 상품 가격
     private Long price;
+    // 상품 재고 수량
+    private int stockQuantity;
 
     // 주문한 상품들의 목록
     @Builder.Default
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
-    
+
     // 해당 상품만 할인하는 쿠폰 목록
     @Builder.Default
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)

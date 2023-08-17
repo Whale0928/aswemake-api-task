@@ -1,0 +1,14 @@
+[[items-select]]
+=== 상품 조회
+
+==== 상품 조회 요청 정보
+
+include::{snippets}/items/select/http-request.adoc[]
+include::{snippets}/items/select/path-parameters.adoc[]
+
+==== 상품 조회 응답
+
+include::{snippets}/items/select/http-response.adoc[]
+include::{snippets}/items/select/response-fields.adoc[]
+
+[[items-select]]

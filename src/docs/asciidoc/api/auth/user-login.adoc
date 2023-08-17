@@ -1,0 +1,14 @@
+[[user-login]]
+=== 사용자 로그인
+
+==== 사용자 로그인 요청 정보
+
+include::{snippets}/auth/login-user/http-request.adoc[]
+include::{snippets}/auth/login-user/request-fields.adoc[]
+
+==== 사용자 로그인 응답
+
+include::{snippets}/auth/login-user/http-response.adoc[]
+include::{snippets}/auth/login-user/response-fields.adoc[]
+
+[[user-login]]

@@ -1,0 +1,43 @@
+ifndef::snippets[]
+:snippets: ../../build/generated-snippets
+endif::[]
+= PetLink API 명세
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+:sectnums: // 분류별 자동으로 숫자를 달아줌
+:docinfo: shared-head
+
+include::api/over-view.adoc[]
+
+[[User]]
+== User API
+
+include::api/auth/user-login.adoc[]
+include::api/auth/market-login.adoc[]
+
+[[Coupon]]
+== Coupon API
+
+include::api/coupon/coupon-select.adoc[]
+
+[[Item]]
+== Item API
+
+include::api/item/items-select.adoc[]
+include::api/item/items-created.adoc[]
+include::api/item/items-update.adoc[]
+include::api/item/items-delete.adoc[]
+include::api/item/items-select-by-time.adoc[]
+
+
+[[Orders]]
+== Orders API
+
+include::api/orders/orders-create.adoc[]
+include::api/orders/orders-select.adoc[]
+include::api/orders/orders-select-total-price.adoc[]
+include::api/orders/orders-select-payment-price.adoc[]
