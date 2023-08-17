@@ -162,10 +162,10 @@ class AuthControllerRestDocsTest extends RestDocsSupport {
                                 fieldWithPath("message").ignored(),
                                 fieldWithPath("data").ignored(),
                                 fieldWithPath("data.role").description("역할"),
-                                fieldWithPath("data.id").description("마켓 아이디").type(Long.class),
+                                fieldWithPath("data.id").description("마켓 아이디").type(JsonFieldType.NUMBER),
                                 fieldWithPath("data.email").description("마켓 이메일"),
                                 fieldWithPath("data.name").description("마켓 이름"),
-                                fieldWithPath("data.sessionId").description("세션 아이디").type(String.class)
+                                fieldWithPath("data.sessionId").description("세션 아이디").type(JsonFieldType.STRING)
                         )
                 ));
     }
