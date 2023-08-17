@@ -6,6 +6,7 @@ import com.aswemake.api.aswemakeapitask.dto.item.request.ItemCreateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.item.request.ItemUpdateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemCreateResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemDeleteResponseDto;
+import com.aswemake.api.aswemakeapitask.dto.item.response.ItemPriceAtTimeResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemSelectResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemUpdateResponseDto;
 import org.junit.jupiter.api.DisplayName;
@@ -34,6 +35,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -82,10 +84,10 @@ class ItemControllerRestDocsTest extends RestDocsSupport {
                                 fieldWithPath("message").description("응답 메시지"),
                                 fieldWithPath("data").description("응답 데이터"),
                                 fieldWithPath("data.id").description("상품 아이디").type(JsonFieldType.NUMBER),
-                                fieldWithPath("data.name").description("상품 이름"),
-                                fieldWithPath("data.price").description("상품 단가 가격"),
-                                fieldWithPath("data.stockQuantity").description("상품 재고 수량"),
-                                fieldWithPath("data.remainingStockQuantity").description("상품 남은 현재고 수량")
+                                fieldWithPath("data.name").description("상품 이름").type(JsonFieldType.STRING),
+                                fieldWithPath("data.price").description("상품 단가 가격").type(JsonFieldType.NUMBER),
+                                fieldWithPath("data.stockQuantity").description("상품 재고 수량").type(JsonFieldType.NUMBER),
+                                fieldWithPath("data.remainingStockQuantity").description("상품 남은 현재고 수량").type(JsonFieldType.NUMBER)
                         )
                 ));
     }
@@ -136,13 +138,12 @@ class ItemControllerRestDocsTest extends RestDocsSupport {
                                 fieldWithPath("message").description("응답 메시지"),
                                 fieldWithPath("data").description("응답 데이터"),
                                 fieldWithPath("data.id").description("생성된 상품 아이디").type(JsonFieldType.NUMBER),
-                                fieldWithPath("data.name").description("생성된 상품 이름"),
-                                fieldWithPath("data.price").description("생성된 상품 단가 가격"),
-                                fieldWithPath("data.stockQuantity").description("생성된 상품 재고 수량")
+                                fieldWithPath("data.name").description("생성된 상품 이름").type(JsonFieldType.STRING),
+                                fieldWithPath("data.price").description("생성된 상품 단가 가격").type(JsonFieldType.NUMBER),
+                                fieldWithPath("data.stockQuantity").description("생성된 상품 재고 수량").type(JsonFieldType.NUMBER)
                         )
                 ));
     }
-
 
     @Test
     @DisplayName("상품 가격 수정")
@@ -189,10 +190,10 @@ class ItemControllerRestDocsTest extends RestDocsSupport {
                                 fieldWithPath("data").description("응답 데이터"),
                                 fieldWithPath("data.id").description("수정 상품 아이디").type(JsonFieldType.NUMBER),
                                 fieldWithPath("data.name").description("수정 상품 이름"),
-                                fieldWithPath("data.beforePrice").description("수정 전 가격"),
-                                fieldWithPath("data.afterPrice").description("수정 후 가격"),
-                                fieldWithPath("data.stockQuantity").description("상품 재고 수량"),
-                                fieldWithPath("data.remainingStockQuantity").description("상품 재고 수량")
+                                fieldWithPath("data.beforePrice").description("수정 전 가격").type(JsonFieldType.NUMBER),
+                                fieldWithPath("data.afterPrice").description("수정 후 가격").type(JsonFieldType.NUMBER),
+                                fieldWithPath("data.stockQuantity").description("상품 재고 수량").type(JsonFieldType.NUMBER),
+                                fieldWithPath("data.remainingStockQuantity").description("상품 재고 수량").type(JsonFieldType.NUMBER)
                         )
                 ));
     }
@@ -233,6 +234,52 @@ class ItemControllerRestDocsTest extends RestDocsSupport {
                                 fieldWithPath("data.name").description("삭제 상품 이름"),
                                 fieldWithPath("data.remainingStockQuantity").description("삭제 시점 잔여 재고 수량"),
                                 fieldWithPath("data.deletedAt").description("삭제 처리 시점")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("특정 시점 아이템 조회")
+    void selectItemPriceAtTime() throws Exception {
+        Long id = 1L;
+        String date = "2021-10-10";
+
+        GlobalResponse response = GlobalResponse.builder()
+                .status(OK)
+                .message("조회 성공")
+                .data(ItemPriceAtTimeResponseDto.builder()
+                        .id(1L)
+                        .name("테스트 상품_AAA")
+                        .date("2021-10-10")
+                        .price(8500)
+                        .currentPrice(11000)
+                        .build())
+                .build();
+
+        mockMvc.perform(get("/v1/items/{id}/price", id)
+                        .param("date", date)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("items/select/price",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        queryParameters(
+                                parameterWithName("date").description("조회 기준 시점")  // 쿼리 파라미터 설명 추가
+                        ),
+                        pathParameters(
+                                parameterWithName("id").description("상품 아이디")
+                        ),
+                        responseFields(
+                                fieldWithPath("status").description("HTTP 상태코드"),
+                                fieldWithPath("timestamp").description("응답 시간"),
+                                fieldWithPath("message").description("응답 메시지"),
+                                fieldWithPath("data").description("응답 데이터"),
+                                fieldWithPath("data.id").description("상품 아이디").type(JsonFieldType.NUMBER),
+                                fieldWithPath("data.name").description("상품 이름").type(JsonFieldType.STRING),
+                                fieldWithPath("data.date").description("조회 기준 시점").type(JsonFieldType.STRING),
+                                fieldWithPath("data.price").description("조회 기준 시점 상품 가격").type(JsonFieldType.NUMBER),
+                                fieldWithPath("data.currentPrice").description("현재 시점 가격").type(JsonFieldType.NUMBER)
                         )
                 ));
     }

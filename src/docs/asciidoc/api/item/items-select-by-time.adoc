@@ -1,0 +1,16 @@
+[[items-select-by-time]]
+=== 상품 특정 시점 조회
+
+==== 상품 특정 시점 조회 요청 정보
+
+include::{snippets}/items/select/price/http-request.adoc[]
+include::{snippets}/items/select/price/path-parameters.adoc[]
+include::{snippets}/items/select/price/query-parameters.adoc[]
+
+
+==== 상품 특정 시점 조회 응답 정보
+
+include::{snippets}/items/select/price/http-response.adoc[]
+include::{snippets}/items/select/price/response-fields.adoc[]
+
+[[items-select-by-time]]
