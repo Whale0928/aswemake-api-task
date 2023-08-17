@@ -18,4 +18,8 @@ public class UserLoginInfo {
     private String email;
     private String name;
     private String sessionId;
+
+    public boolean isEmpty() {
+        return this.id == null;
+    }
 }
