@@ -27,4 +27,6 @@ include::api/coupon/coupon-select.adoc[]
 [[Item]]
 == Item API
 
-include::api/item/item-select.adoc[]
+include::api/item/items-select.adoc[]
+include::api/item/items-created.adoc[]
+include::api/item/items-update.adoc[]

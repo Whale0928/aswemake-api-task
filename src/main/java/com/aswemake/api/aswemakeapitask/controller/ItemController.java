@@ -3,8 +3,10 @@ package com.aswemake.api.aswemakeapitask.controller;
 
 import com.aswemake.api.aswemakeapitask.dto.GlobalResponse;
 import com.aswemake.api.aswemakeapitask.dto.item.request.ItemCreateRequestDto;
+import com.aswemake.api.aswemakeapitask.dto.item.request.ItemUpdateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemCreateResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemSelectResponseDto;
+import com.aswemake.api.aswemakeapitask.dto.item.response.ItemUpdateResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -47,21 +49,33 @@ public class ItemController {
     // TODO : POST /items: 상품 생성
     @PostMapping
     public ResponseEntity<GlobalResponse> createItem(@Valid @RequestBody ItemCreateRequestDto request) {
-        return ok(GlobalResponse.builder()
+        return new ResponseEntity<>(GlobalResponse.builder()
                 .status(HttpStatus.CREATED)
-                .message("상품 생성 성공")
+                .message("CREATED")
                 .data(ItemCreateResponseDto.builder()
                         .id(1L)
-                        .name("생성된_상품_AAA")
+                        .name("테스트 상품_AAA")
                         .price(1000)
+                        .stockQuantity(100)
                         .build())
-                .build());
+                .build(), HttpStatus.CREATED);
     }
 
     // TODO : PUT /items/{id}: 상품 가격 수정
     @PutMapping("{id}")
-    public ResponseEntity<GlobalResponse> updateItem(@PathVariable Long id) {
-        return null;
+    public ResponseEntity<GlobalResponse> updateItem(@PathVariable Long id, @Valid @RequestBody ItemUpdateRequestDto request) {
+        return ok(GlobalResponse.builder()
+                .status(HttpStatus.OK)
+                .message("CREATED")
+                .data(ItemUpdateResponseDto.builder()
+                        .id(1L)
+                        .name("테스트 상품_AAA")
+                        .beforePrice(1000)
+                        .afterPrice(1500)
+                        .stockQuantity(100)
+                        .remainingStockQuantity(60)
+                        .build())
+                .build());
     }
 
     // TODO : DELETE /items/{id}: 상품 삭제
