@@ -5,6 +5,7 @@ import com.aswemake.api.aswemakeapitask.dto.GlobalResponse;
 import com.aswemake.api.aswemakeapitask.dto.item.request.ItemCreateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.item.request.ItemUpdateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemCreateResponseDto;
+import com.aswemake.api.aswemakeapitask.dto.item.response.ItemDeleteResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemSelectResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemUpdateResponseDto;
 import org.junit.jupiter.api.DisplayName;
@@ -14,11 +15,14 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.restdocs.payload.JsonFieldType;
 
+import java.time.LocalDateTime;
+
 import static java.time.LocalDateTime.now;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
@@ -51,7 +55,7 @@ class ItemControllerRestDocsTest extends RestDocsSupport {
                 .builder()
                 .status(OK)
                 .timestamp(now())
-                .message("쿠폰 정보 조회 성공")
+                .message("상품 정보 성공")
                 .data(ItemSelectResponseDto.builder()
                         .id(id)
                         .name("테스트 상품_AAA")
@@ -104,7 +108,7 @@ class ItemControllerRestDocsTest extends RestDocsSupport {
                 .builder()
                 .status(CREATED)
                 .timestamp(now())
-                .message("쿠폰 정보 조회 성공")
+                .message("상품 생성 성공")
                 .data(ItemCreateResponseDto.builder()
                         .id(id)
                         .name("테스트 상품_AAA")
@@ -153,7 +157,7 @@ class ItemControllerRestDocsTest extends RestDocsSupport {
                 .builder()
                 .status(OK)
                 .timestamp(now())
-                .message("쿠폰 정보 조회 성공")
+                .message("상품 가격 수정 성공")
                 .data(ItemUpdateResponseDto.builder()
                         .id(1L)
                         .name("테스트 상품_AAA")
@@ -183,12 +187,52 @@ class ItemControllerRestDocsTest extends RestDocsSupport {
                                 fieldWithPath("timestamp").description("응답 시간"),
                                 fieldWithPath("message").description("응답 메시지"),
                                 fieldWithPath("data").description("응답 데이터"),
-                                fieldWithPath("data.id").description("생성된 상품 아이디").type(JsonFieldType.NUMBER),
-                                fieldWithPath("data.name").description("생성된 상품 이름"),
+                                fieldWithPath("data.id").description("수정 상품 아이디").type(JsonFieldType.NUMBER),
+                                fieldWithPath("data.name").description("수정 상품 이름"),
                                 fieldWithPath("data.beforePrice").description("수정 전 가격"),
                                 fieldWithPath("data.afterPrice").description("수정 후 가격"),
                                 fieldWithPath("data.stockQuantity").description("상품 재고 수량"),
                                 fieldWithPath("data.remainingStockQuantity").description("상품 재고 수량")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("상품 삭제")
+    void deleteItem() throws Exception {
+        Long id = 1L;
+        int changedPrice = 15000;
+        GlobalResponse response = GlobalResponse
+                .builder()
+                .status(OK)
+                .timestamp(now())
+                .message("상품 삭제 성공")
+                .data(ItemDeleteResponseDto.builder()
+                        .id(1L)
+                        .name("테스트 상품_AAA")
+                        .remainingStockQuantity(60)
+                        .deletedAt(LocalDateTime.now())
+                        .build())
+                .build();
+
+        mockMvc.perform(delete("/v1/items/{id}", id))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("items/delete",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("id").description("삭제 대상 상품 아이디")
+                        ),
+                        responseFields(
+                                fieldWithPath("status").description("HTTP 상태코드"),
+                                fieldWithPath("timestamp").description("응답 시간"),
+                                fieldWithPath("message").description("응답 메시지"),
+                                fieldWithPath("data").description("응답 데이터"),
+                                fieldWithPath("data.id").description("삭제 상품 아이디").type(JsonFieldType.NUMBER),
+                                fieldWithPath("data.name").description("삭제 상품 이름"),
+                                fieldWithPath("data.remainingStockQuantity").description("삭제 시점 잔여 재고 수량"),
+                                fieldWithPath("data.deletedAt").description("삭제 처리 시점")
                         )
                 ));
     }

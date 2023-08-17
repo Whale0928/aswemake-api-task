@@ -5,6 +5,7 @@ import com.aswemake.api.aswemakeapitask.dto.GlobalResponse;
 import com.aswemake.api.aswemakeapitask.dto.item.request.ItemCreateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.item.request.ItemUpdateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemCreateResponseDto;
+import com.aswemake.api.aswemakeapitask.dto.item.response.ItemDeleteResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemSelectResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemUpdateResponseDto;
 import jakarta.validation.Valid;
@@ -81,7 +82,16 @@ public class ItemController {
     // TODO : DELETE /items/{id}: 상품 삭제
     @DeleteMapping("{id}")
     public ResponseEntity<GlobalResponse> deleteItem(@PathVariable Long id) {
-        return null;
+        return ok(GlobalResponse.builder()
+                .status(HttpStatus.OK)
+                .message("삭제 성공")
+                .data(ItemDeleteResponseDto.builder()
+                        .id(1L)
+                        .name("테스트 상품_AAA")
+                        .remainingStockQuantity(50)
+                        .deletedAt(null)
+                        .build())
+                .build());
     }
 
     // TODO : GET /items/{id}/price?date=YYYY-MM-DD: 특정 시점의 상품 가격 조회
