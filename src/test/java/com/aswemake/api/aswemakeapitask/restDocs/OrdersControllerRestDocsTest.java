@@ -4,6 +4,8 @@ import com.aswemake.api.aswemakeapitask.controller.OrdersController;
 import com.aswemake.api.aswemakeapitask.domain.orders.OrderStatus;
 import com.aswemake.api.aswemakeapitask.dto.orders.request.OrderCreateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderCreateResponseDto;
+import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderItemDto;
+import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderSelectResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.users.response.UserLoginInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +22,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.time.LocalDateTime.now;
+import static java.util.Arrays.asList;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -70,7 +74,7 @@ class OrdersControllerRestDocsTest extends RestDocsSupport {
     }
 
     @Test
-    @DisplayName("주문 생성 성공 시 HTTP 상태 코드 200을 반환해야 한다.")
+    @DisplayName("주문 생성")
     void createOrder() throws Exception {
         UserLoginInfo userInfo = createTestUserInfo();
         List<OrderCreateRequestDto.OrderItemRequest> orderItems = createOrderItems();
@@ -120,6 +124,64 @@ class OrdersControllerRestDocsTest extends RestDocsSupport {
                                 fieldWithPath("data.orderStatus").description("주문 상태"),
                                 fieldWithPath("data.totalAmount").description("사용자 이름"),
                                 fieldWithPath("data.orderDate").description("구매 일시")
+                        )
+                ));
+    }
+
+
+    @Test
+    @DisplayName("주문 조회")
+    void selectOrder() throws Exception {
+
+        List<OrderItemDto> orderItemDtoList = asList(OrderItemDto.builder()
+                        .id(1L)
+                        .name("name")
+                        .quantity(1)
+                        .price(1L)
+                        .build(),
+                OrderItemDto.builder()
+                        .id(1L)
+                        .name("name")
+                        .quantity(1)
+                        .price(1L)
+                        .build());
+
+        OrderSelectResponseDto responseDto = OrderSelectResponseDto.builder()
+                .orderCode("orderCode")
+                .userId(1L)
+                .userName("userName")
+                .status(OrderStatus.PAID)
+                .totalAmount(150_000L)
+                .deliveryFee(3_000L)
+                .orderItems(orderItemDtoList)
+                .build();
+
+
+        mockMvc.perform(get("/v1/orders/{id}", 1L))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("orders/select-order",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("id").description("주문 아이디")
+                        ),
+                        responseFields(
+                                fieldWithPath("status").ignored(),
+                                fieldWithPath("timestamp").ignored(),
+                                fieldWithPath("message").ignored(),
+                                fieldWithPath("data").ignored(),
+                                fieldWithPath("data.orderCode").description("주문 아이디"),
+                                fieldWithPath("data.userId").description("주문 고객"),
+                                fieldWithPath("data.userName").description("주문 고객명"),
+                                fieldWithPath("data.status").description("주문 상태"),
+                                fieldWithPath("data.totalAmount").description("총 구매 금액"),
+                                fieldWithPath("data.deliveryFee").description("배송비"),
+                                fieldWithPath("data.orderItems").description("주문 상품 목록"),
+                                fieldWithPath("data.orderItems[].id").description("상품 아이디"),
+                                fieldWithPath("data.orderItems[].name").description("상품명"),
+                                fieldWithPath("data.orderItems[].quantity").description("상품 수량"),
+                                fieldWithPath("data.orderItems[].price").description("상품 단가")
                         )
                 ));
     }
