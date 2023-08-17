@@ -6,6 +6,7 @@ import com.aswemake.api.aswemakeapitask.domain.user.Users;
 import com.aswemake.api.aswemakeapitask.dto.GlobalResponse;
 import com.aswemake.api.aswemakeapitask.dto.users.request.LoginRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.users.response.UserLoginInfo;
+import com.aswemake.api.aswemakeapitask.service.AuthService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,8 @@ import static org.springframework.http.ResponseEntity.ok;
 @RequestMapping("/v1/auth")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AuthController {
+
+    private final AuthService authService;
 
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;

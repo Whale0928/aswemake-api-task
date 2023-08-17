@@ -8,6 +8,7 @@ import com.aswemake.api.aswemakeapitask.domain.user.Users;
 import com.aswemake.api.aswemakeapitask.dto.GlobalResponse;
 import com.aswemake.api.aswemakeapitask.dto.users.request.LoginRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.users.response.UserLoginInfo;
+import com.aswemake.api.aswemakeapitask.service.AuthService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,6 +43,8 @@ class AuthControllerRestDocsTest extends RestDocsSupport {
     @InjectMocks
     private AuthController authController;
     @Mock
+    private AuthService authService;
+    @Mock
     private AuthenticationManager authenticationManager;
     @Mock
     private UserDetailsService userDetailsService;
@@ -50,7 +53,7 @@ class AuthControllerRestDocsTest extends RestDocsSupport {
 
     @Override
     protected Object initController() {
-        return new AuthController(authenticationManager, userDetailsService, userRepository);
+        return new AuthController(authService, authenticationManager, userDetailsService, userRepository);
     }
 
     @Test
