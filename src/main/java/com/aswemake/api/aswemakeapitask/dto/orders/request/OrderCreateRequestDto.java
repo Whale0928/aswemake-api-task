@@ -17,12 +17,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class OrderCreateRequestDto {
+
     @NotEmpty(message = "주문 상품 목록은 비어있을 수 없습니다.")
     private List<OrderItemRequest> orderItems;
 
-    private Long couponId;
+    private List<Long> coupons;
 
-    @NotNull(message = "배달비는 필수입니다.")
+    @NotNull(message = "배달비는 필수입니다. (배달비가 없는 경우 0을 입력하세요.)")
     private Long deliveryFee;
 
     @Getter
