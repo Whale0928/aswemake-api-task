@@ -2,10 +2,7 @@ package com.aswemake.api.aswemakeapitask.restDocs;
 
 
 import com.aswemake.api.aswemakeapitask.controller.AuthController;
-import com.aswemake.api.aswemakeapitask.domain.user.UserRepository;
 import com.aswemake.api.aswemakeapitask.domain.user.UserRole;
-import com.aswemake.api.aswemakeapitask.domain.user.Users;
-import com.aswemake.api.aswemakeapitask.dto.GlobalResponse;
 import com.aswemake.api.aswemakeapitask.dto.users.request.LoginRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.users.response.UserLoginInfo;
 import com.aswemake.api.aswemakeapitask.service.AuthService;
@@ -15,15 +12,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
-
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -48,12 +45,10 @@ class AuthControllerRestDocsTest extends RestDocsSupport {
     private AuthenticationManager authenticationManager;
     @Mock
     private UserDetailsService userDetailsService;
-    @Mock
-    private UserRepository userRepository; // 사용자 정보
 
     @Override
     protected Object initController() {
-        return new AuthController(authService, authenticationManager, userDetailsService, userRepository);
+        return new AuthController(authService, authenticationManager, userDetailsService);
     }
 
     @Test
@@ -72,13 +67,16 @@ class AuthControllerRestDocsTest extends RestDocsSupport {
                 .sessionId("test-Session-Id")
                 .build();
 
-        GlobalResponse responseDto = GlobalResponse.builder()
-                .status(HttpStatus.OK)
-                .timestamp(LocalDateTime.now())
-                .message("로그인 성공")
-                .data(userLoginInfo)
+        when(authService.loginByUser(any(LoginRequestDto.class))).thenReturn(userLoginInfo);
+
+        UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
+                .username("userEmail@gmail.com")
+                .password("qwe123")
+                .authorities(UserRole.USER.toString())
                 .build();
 
+        when(userDetailsService.loadUserByUsername(anyString())).thenReturn(userDetails);
+        when(authenticationManager.authenticate(any())).thenReturn(mock(Authentication.class));
         mockMvc.perform(post("/v1/auth/users/login")
                         .content(objectMapper.writeValueAsString(requestDto))
                         .contentType(APPLICATION_JSON))
@@ -109,43 +107,29 @@ class AuthControllerRestDocsTest extends RestDocsSupport {
     @Test
     @DisplayName("마켓 사용자 로그인")
     void loginByMarket() throws Exception {
-
-        String email = "market@market.com";
-
-        Users users = Users.builder()
-                .email(email)
-                .name("testName")
-                .role(UserRole.MARKET)
-                .build();
-
         LoginRequestDto requestDto = LoginRequestDto.builder()
-                .email(email)
+                .email("market@market.com")
                 .password("qwe123")
                 .build();
 
         UserLoginInfo userLoginInfo = UserLoginInfo.builder()
                 .id(1L)
-                .email(email)
-                .name("testName")
+                .email("market@market.com")
+                .name("users")
                 .role(UserRole.MARKET)
                 .sessionId("test-Session-Id")
                 .build();
 
-        GlobalResponse responseDto = GlobalResponse.builder()
-                .status(HttpStatus.OK)
-                .timestamp(LocalDateTime.now())
-                .message("로그인 성공")
-                .data(userLoginInfo)
-                .build();
-
-        when(userRepository.findByEmail(email)).thenReturn(Optional.ofNullable(users));
+        when(authService.loginByMarket(any(LoginRequestDto.class))).thenReturn(userLoginInfo);
 
         UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
-                .username(email)
+                .username("market@market.com")
                 .password("qwe123")
                 .authorities(UserRole.MARKET.toString())
                 .build();
-        when(userDetailsService.loadUserByUsername(email)).thenReturn(userDetails);
+
+        when(userDetailsService.loadUserByUsername(anyString())).thenReturn(userDetails);
+        when(authenticationManager.authenticate(any())).thenReturn(mock(Authentication.class));
 
         mockMvc.perform(post("/v1/auth/market/login")
                         .content(objectMapper.writeValueAsString(requestDto))
