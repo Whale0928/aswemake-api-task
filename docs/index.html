@@ -617,7 +617,7 @@ Content-Length: 255
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 18, 22, 14, 42, 144288000 ],
+  "timestamp" : [ 2023, 8, 18, 23, 17, 47, 426937000 ],
   "message" : "사용자 로그인 성공",
   "data" : {
     "role" : "USER",
@@ -742,11 +742,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 251
+Content-Length: 252
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 18, 22, 14, 42, 85243000 ],
+  "timestamp" : [ 2023, 8, 18, 23, 17, 47, 366700000 ],
   "message" : "마켓 로그인 성공",
   "data" : {
     "role" : "MARKET",
@@ -859,7 +859,7 @@ Content-Length: 340
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 18, 22, 14, 42, 178106000 ],
+  "timestamp" : [ 2023, 8, 18, 23, 17, 47, 460749000 ],
   "message" : "쿠폰 정보 조회 성공",
   "data" : {
     "id" : 1,
@@ -993,7 +993,7 @@ Content-Length: 251
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 18, 22, 14, 42, 217113000 ],
+  "timestamp" : [ 2023, 8, 18, 23, 17, 47, 500208000 ],
   "message" : "성공",
   "data" : {
     "id" : 1,
@@ -1129,7 +1129,7 @@ Content-Length: 223
 
 {
   "status" : "CREATED",
-  "timestamp" : [ 2023, 8, 18, 22, 14, 42, 270339000 ],
+  "timestamp" : [ 2023, 8, 18, 23, 17, 47, 553216000 ],
   "message" : "CREATED",
   "data" : {
     "id" : 1,
@@ -1259,17 +1259,17 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 249
+Content-Length: 284
 
 {
   "status" : "OK",
-  "timestamp" : null,
-  "message" : "CREATED",
+  "timestamp" : [ 2023, 8, 18, 23, 17, 47, 536479000 ],
+  "message" : "성공",
   "data" : {
     "id" : 1,
     "name" : "테스트 상품_AAA",
-    "beforePrice" : 1000,
-    "afterPrice" : 1500,
+    "beforePrice" : 11200,
+    "afterPrice" : 15000,
     "stockQuantity" : 100,
     "remainingStockQuantity" : 60
   }
@@ -1374,17 +1374,17 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 201
+Content-Length: 262
 
 {
   "status" : "OK",
-  "timestamp" : null,
-  "message" : "삭제 성공",
+  "timestamp" : [ 2023, 8, 18, 23, 17, 47, 566426000 ],
+  "message" : "성공",
   "data" : {
     "id" : 1,
     "name" : "테스트 상품_AAA",
-    "remainingStockQuantity" : 50,
-    "deletedAt" : null
+    "remainingStockQuantity" : 60,
+    "deletedAt" : [ 2023, 8, 18, 23, 17, 47, 565735000 ]
   }
 }</code></pre>
 </div>
@@ -1428,7 +1428,7 @@ Content-Length: 201
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.deletedAt</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">삭제 처리 시점</p></td>
 </tr>
@@ -1657,14 +1657,14 @@ Content-Length: 314
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 18, 22, 14, 42, 329436000 ],
+  "timestamp" : [ 2023, 8, 18, 23, 17, 47, 609074000 ],
   "message" : "주문이 생성되었습니다.",
   "data" : {
     "id" : 1,
     "orderCode" : "2021090001-market-AA",
     "orderStatus" : "PAID",
     "totalAmount" : 150000,
-    "orderDate" : [ 2023, 8, 18, 22, 14, 42, 329423000 ]
+    "orderDate" : [ 2023, 8, 18, 23, 17, 47, 609061000 ]
   }
 }</code></pre>
 </div>
@@ -1765,7 +1765,7 @@ Content-Length: 498
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 18, 22, 14, 42, 341953000 ],
+  "timestamp" : [ 2023, 8, 18, 23, 17, 47, 621431000 ],
   "message" : "주문을 조회하였습니다.",
   "data" : {
     "orderCode" : "orderCode",
@@ -1953,7 +1953,7 @@ Content-Length: 144
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 18, 22, 14, 42, 303771000 ],
+  "timestamp" : [ 2023, 8, 18, 23, 17, 47, 583654000 ],
   "message" : "주문에 대한 총 금액 : ",
   "data" : 150000
 }</code></pre>
@@ -2031,7 +2031,7 @@ Content-Length: 144
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 18, 22, 14, 42, 314459000 ],
+  "timestamp" : [ 2023, 8, 18, 23, 17, 47, 596454000 ],
   "message" : "주문에 대한 총 금액 : ",
   "data" : 150000
 }</code></pre>

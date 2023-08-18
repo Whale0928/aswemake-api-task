@@ -14,6 +14,6 @@ public class ItemPriceAtTimeResponseDto {
     private Long id;
     private String name;
     private String date;
-    private int price;
-    private int currentPrice;
+    private Long price;
+    private Long currentPrice;
 }

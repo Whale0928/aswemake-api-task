@@ -1,5 +1,6 @@
 package com.aswemake.api.aswemakeapitask.service;
 
+import com.aswemake.api.aswemakeapitask.common.util.DateUtils;
 import com.aswemake.api.aswemakeapitask.domain.item.Item;
 import com.aswemake.api.aswemakeapitask.domain.item.ItemHistoryRepository;
 import com.aswemake.api.aswemakeapitask.domain.item.ItemRepository;
@@ -8,6 +9,8 @@ import com.aswemake.api.aswemakeapitask.domain.orders.OrderItem;
 import com.aswemake.api.aswemakeapitask.dto.item.request.ItemCreateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.item.request.ItemUpdateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemCreateResponseDto;
+import com.aswemake.api.aswemakeapitask.dto.item.response.ItemDeleteResponseDto;
+import com.aswemake.api.aswemakeapitask.dto.item.response.ItemPriceAtTimeResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemSelectResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemUpdateResponseDto;
 import com.aswemake.api.aswemakeapitask.exception.CustomException;
@@ -16,12 +19,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static com.aswemake.api.aswemakeapitask.domain.item.PriceChangeStatus.DECREASED;
 import static com.aswemake.api.aswemakeapitask.domain.item.PriceChangeStatus.INCREASED;
+import static com.aswemake.api.aswemakeapitask.exception.ErrorMessages.ITEM_DELETE_NOT_POSSIBLE;
 import static com.aswemake.api.aswemakeapitask.exception.ErrorMessages.ITEM_NAME_DUPLICATION;
 import static com.aswemake.api.aswemakeapitask.exception.ErrorMessages.ITEM_NOT_FOUND;
 import static com.aswemake.api.aswemakeapitask.exception.ErrorMessages.ITEM_PRICE_NOT_CHANGED;
+import static java.time.LocalDateTime.now;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -86,7 +92,7 @@ public class ItemService {
                 .item(item)
                 .price(item.getPrice())
                 .priceChangeStatus(beforePrice < request.getPrice() ? INCREASED : DECREASED)
-                .changedDate(LocalDateTime.now())
+                .changedDate(now())
                 .build();
 
         itemHistoryRepository.saveAndFlush(priceHistory);
@@ -100,4 +106,47 @@ public class ItemService {
                 .remainingStockQuantity(item.getStockQuantity() - totalCount)
                 .build();
     }
+
+    @Transactional
+    public ItemDeleteResponseDto deleteItem(Long id) throws Exception {
+        Item item = itemRepository.findByIdWithOrderItem(id)
+                .orElseThrow(() -> new Exception(new CustomException(NOT_FOUND, ITEM_NOT_FOUND)));
+
+        String deletedItemName = item.getName();
+        int deleteAtQuantity = item.getStockQuantity() - item.getOrderItems().stream().mapToInt(OrderItem::getQuantity).sum();
+
+        if (!item.getOrderItems().isEmpty()) {
+            throw new CustomException(BAD_REQUEST, ITEM_DELETE_NOT_POSSIBLE);
+        }
+
+        itemRepository.delete(item);
+
+        return ItemDeleteResponseDto.builder()
+                .id(id)
+                .name(deletedItemName)
+                .remainingStockQuantity(deleteAtQuantity)
+                .deletedAt(now())
+                .build();
+    }
+
+    public ItemPriceAtTimeResponseDto selectItemPriceAtTime(Long id, String date) throws Exception {
+        LocalDateTime dataAt = DateUtils.parseDate(date);
+
+        Item item = itemRepository.findById(id)
+                .orElseThrow(() -> new Exception(new CustomException(NOT_FOUND, ITEM_NOT_FOUND)));
+
+        // 특정 시점 기준 조회
+        Optional<PriceHistory> optionalPriceHistory = itemHistoryRepository.findTopByItemIdAndChangedDateBeforeOrderByChangedDateDesc(id, dataAt);
+        Long priceAtGivenDate = optionalPriceHistory.map(PriceHistory::getPrice).orElse(item.getPrice());
+
+        return ItemPriceAtTimeResponseDto.builder()
+                .id(id)
+                .name(item.getName())
+                .date(String.valueOf(dataAt))
+                .price(priceAtGivenDate)
+                .currentPrice(item.getPrice())
+                .build();
+    }
+
+
 }
