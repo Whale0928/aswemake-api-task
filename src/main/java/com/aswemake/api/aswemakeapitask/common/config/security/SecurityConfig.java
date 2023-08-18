@@ -55,6 +55,7 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/v1/auth/**")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/v1/coupons/**","GET")).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .build();
