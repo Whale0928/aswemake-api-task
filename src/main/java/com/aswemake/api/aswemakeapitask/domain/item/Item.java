@@ -31,7 +31,7 @@ public class Item extends BaseEntity {
 
     // 주문한 상품들의 목록
     @Builder.Default
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     // 해당 상품만 할인하는 쿠폰 목록

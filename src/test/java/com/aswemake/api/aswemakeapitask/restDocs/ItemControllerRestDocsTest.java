@@ -9,16 +9,19 @@ import com.aswemake.api.aswemakeapitask.dto.item.response.ItemDeleteResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemPriceAtTimeResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemSelectResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemUpdateResponseDto;
+import com.aswemake.api.aswemakeapitask.service.ItemService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.restdocs.payload.JsonFieldType;
 
 import java.time.LocalDateTime;
 
 import static java.time.LocalDateTime.now;
+import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -44,28 +47,35 @@ class ItemControllerRestDocsTest extends RestDocsSupport {
     @InjectMocks
     private ItemController itemController;
 
+    @Mock
+    private ItemService itemService;
+
     @Override
     protected Object initController() {
-        return new ItemController();
+        return new ItemController(itemService);
     }
 
     @Test
     @DisplayName("상품 정보 조회")
     void selectItem() throws Exception {
         Long id = 1L;
+        ItemSelectResponseDto responseDto = ItemSelectResponseDto.builder()
+                .id(id)
+                .name("테스트 상품_AAA")
+                .price(1000L)
+                .stockQuantity(100)
+                .remainingStockQuantity(50)
+                .build();
+
         GlobalResponse response = GlobalResponse
                 .builder()
                 .status(OK)
                 .timestamp(now())
                 .message("상품 정보 성공")
-                .data(ItemSelectResponseDto.builder()
-                        .id(id)
-                        .name("테스트 상품_AAA")
-                        .price(1000)
-                        .stockQuantity(100)
-                        .remainingStockQuantity(50)
-                        .build())
+                .data(responseDto)
                 .build();
+
+        when(itemService.selectItem(id)).thenReturn(responseDto);
 
         mockMvc.perform(get("/v1/items/{id}", id)
                         .pathInfo("/v1/items/1")

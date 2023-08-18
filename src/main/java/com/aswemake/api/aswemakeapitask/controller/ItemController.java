@@ -4,11 +4,10 @@ package com.aswemake.api.aswemakeapitask.controller;
 import com.aswemake.api.aswemakeapitask.dto.GlobalResponse;
 import com.aswemake.api.aswemakeapitask.dto.item.request.ItemCreateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.item.request.ItemUpdateRequestDto;
-import com.aswemake.api.aswemakeapitask.dto.item.response.ItemCreateResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemDeleteResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemPriceAtTimeResponseDto;
-import com.aswemake.api.aswemakeapitask.dto.item.response.ItemSelectResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemUpdateResponseDto;
+import com.aswemake.api.aswemakeapitask.service.ItemService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,36 +30,15 @@ import static org.springframework.http.ResponseEntity.ok;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ItemController {
 
+    private final ItemService itemService;
 
-    // TODO : GET /items/{id}: 상품 정보 조회
-    @GetMapping("{id}")
-    public ResponseEntity<GlobalResponse> selectItem(@PathVariable Long id) {
-        return ok(GlobalResponse.builder()
-                .status(HttpStatus.OK)
-                .message("OK")
-                .data(ItemSelectResponseDto.builder()
-                        .id(1L)
-                        .name("테스트 상품_AAA")
-                        .price(1000)
-                        .stockQuantity(100)
-                        .remainingStockQuantity(50)
-                        .build())
-                .build());
+    @GetMapping("/{id}")
+    public ResponseEntity<GlobalResponse> selectItem(@PathVariable Long id) throws Exception {
+        return GlobalResponse.ok(itemService.selectItem(id));
     }
-
-    // TODO : POST /items: 상품 생성
     @PostMapping
-    public ResponseEntity<GlobalResponse> createItem(@Valid @RequestBody ItemCreateRequestDto request) {
-        return new ResponseEntity<>(GlobalResponse.builder()
-                .status(HttpStatus.CREATED)
-                .message("CREATED")
-                .data(ItemCreateResponseDto.builder()
-                        .id(1L)
-                        .name("테스트 상품_AAA")
-                        .price(1000)
-                        .stockQuantity(100)
-                        .build())
-                .build(), HttpStatus.CREATED);
+    public ResponseEntity<GlobalResponse> createItem(@Valid @RequestBody ItemCreateRequestDto request) throws Exception {
+        return GlobalResponse.ok(itemService.createItem(request));
     }
 
     // TODO : PUT /items/{id}: 상품 가격 수정
