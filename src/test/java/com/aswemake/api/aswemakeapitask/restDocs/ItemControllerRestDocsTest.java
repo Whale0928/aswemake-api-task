@@ -18,8 +18,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.restdocs.payload.JsonFieldType;
 
-import java.time.LocalDateTime;
-
 import static java.time.LocalDateTime.now;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -164,9 +162,20 @@ class ItemControllerRestDocsTest extends RestDocsSupport {
     @DisplayName("상품 가격 수정")
     void updateItem() throws Exception {
         Long id = 1L;
-        int changedPrice = 15000;
+        Long beforePrice = 11200L;
+        Long afterPrice = 15000L;
+
         ItemUpdateRequestDto requestDto = ItemUpdateRequestDto.builder()
-                .price(changedPrice)
+                .price(afterPrice)
+                .build();
+
+        ItemUpdateResponseDto responseDto = ItemUpdateResponseDto.builder()
+                .id(id)
+                .name("테스트 상품_AAA")
+                .beforePrice(beforePrice)
+                .afterPrice(afterPrice)
+                .stockQuantity(100)
+                .remainingStockQuantity(60)
                 .build();
 
         GlobalResponse response = GlobalResponse
@@ -174,15 +183,10 @@ class ItemControllerRestDocsTest extends RestDocsSupport {
                 .status(OK)
                 .timestamp(now())
                 .message("상품 가격 수정 성공")
-                .data(ItemUpdateResponseDto.builder()
-                        .id(1L)
-                        .name("테스트 상품_AAA")
-                        .beforePrice(1000)
-                        .afterPrice(1500)
-                        .stockQuantity(100)
-                        .remainingStockQuantity(60)
-                        .build())
+                .data(responseDto)
                 .build();
+
+        when(itemService.updateItem(any(Long.class), any(ItemUpdateRequestDto.class))).thenReturn(responseDto);
 
         mockMvc.perform(put("/v1/items/{id}", id)
                         .content(objectMapper.writeValueAsString(requestDto))
@@ -218,18 +222,22 @@ class ItemControllerRestDocsTest extends RestDocsSupport {
     void deleteItem() throws Exception {
         Long id = 1L;
         int changedPrice = 15000;
+        ItemDeleteResponseDto responseDto = ItemDeleteResponseDto.builder()
+                .id(1L)
+                .name("테스트 상품_AAA")
+                .remainingStockQuantity(60)
+                .deletedAt(now())
+                .build();
+
         GlobalResponse response = GlobalResponse
                 .builder()
                 .status(OK)
                 .timestamp(now())
                 .message("상품 삭제 성공")
-                .data(ItemDeleteResponseDto.builder()
-                        .id(1L)
-                        .name("테스트 상품_AAA")
-                        .remainingStockQuantity(60)
-                        .deletedAt(LocalDateTime.now())
-                        .build())
+                .data(responseDto)
                 .build();
+
+        when(itemService.deleteItem(any(Long.class))).thenReturn(responseDto);
 
         mockMvc.perform(delete("/v1/items/{id}", id))
                 .andDo(print())
