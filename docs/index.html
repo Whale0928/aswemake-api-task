@@ -613,11 +613,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 255
+Content-Length: 254
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 18, 23, 17, 47, 426937000 ],
+  "timestamp" : [ 2023, 8, 19, 0, 29, 16, 301615000 ],
   "message" : "사용자 로그인 성공",
   "data" : {
     "role" : "USER",
@@ -742,11 +742,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 252
+Content-Length: 251
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 18, 23, 17, 47, 366700000 ],
+  "timestamp" : [ 2023, 8, 19, 0, 29, 16, 240621000 ],
   "message" : "마켓 로그인 성공",
   "data" : {
     "role" : "MARKET",
@@ -855,11 +855,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 340
+Content-Length: 339
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 18, 23, 17, 47, 460749000 ],
+  "timestamp" : [ 2023, 8, 19, 0, 29, 16, 337560000 ],
   "message" : "쿠폰 정보 조회 성공",
   "data" : {
     "id" : 1,
@@ -989,11 +989,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 251
+Content-Length: 250
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 18, 23, 17, 47, 500208000 ],
+  "timestamp" : [ 2023, 8, 19, 0, 29, 16, 382048000 ],
   "message" : "성공",
   "data" : {
     "id" : 1,
@@ -1125,11 +1125,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 223
+Content-Length: 222
 
 {
   "status" : "CREATED",
-  "timestamp" : [ 2023, 8, 18, 23, 17, 47, 553216000 ],
+  "timestamp" : [ 2023, 8, 19, 0, 29, 16, 441068000 ],
   "message" : "CREATED",
   "data" : {
     "id" : 1,
@@ -1259,11 +1259,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 284
+Content-Length: 283
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 18, 23, 17, 47, 536479000 ],
+  "timestamp" : [ 2023, 8, 19, 0, 29, 16, 422670000 ],
   "message" : "성공",
   "data" : {
     "id" : 1,
@@ -1374,17 +1374,17 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 262
+Content-Length: 260
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 18, 23, 17, 47, 566426000 ],
+  "timestamp" : [ 2023, 8, 19, 0, 29, 16, 454190000 ],
   "message" : "성공",
   "data" : {
     "id" : 1,
     "name" : "테스트 상품_AAA",
     "remainingStockQuantity" : 60,
-    "deletedAt" : [ 2023, 8, 18, 23, 17, 47, 565735000 ]
+    "deletedAt" : [ 2023, 8, 19, 0, 29, 16, 453500000 ]
   }
 }</code></pre>
 </div>
@@ -1442,7 +1442,7 @@ Content-Length: 262
 <h4 id="_상품_특정_시점_조회_요청_정보"><a class="link" href="#_상품_특정_시점_조회_요청_정보">4.5.1. 상품 특정 시점 조회 요청 정보</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/items/1/price?date=2021-10-10 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/items/1/price?date=2023-07-18T23%3A57 HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1493,16 +1493,16 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 217
+Content-Length: 249
 
 {
   "status" : "OK",
-  "timestamp" : null,
-  "message" : "조회 성공",
+  "timestamp" : [ 2023, 8, 19, 0, 29, 16, 402078000 ],
+  "message" : "성공",
   "data" : {
     "id" : 1,
     "name" : "테스트 상품_AAA",
-    "date" : "2021-10-10",
+    "date" : "2023-07-18T23:57",
     "price" : 8500,
     "currentPrice" : 11000
   }
@@ -1653,18 +1653,18 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 314
+Content-Length: 312
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 18, 23, 17, 47, 609074000 ],
+  "timestamp" : [ 2023, 8, 19, 0, 29, 16, 499119000 ],
   "message" : "주문이 생성되었습니다.",
   "data" : {
     "id" : 1,
     "orderCode" : "2021090001-market-AA",
     "orderStatus" : "PAID",
     "totalAmount" : 150000,
-    "orderDate" : [ 2023, 8, 18, 23, 17, 47, 609061000 ]
+    "orderDate" : [ 2023, 8, 19, 0, 29, 16, 499106000 ]
   }
 }</code></pre>
 </div>
@@ -1761,11 +1761,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 498
+Content-Length: 497
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 18, 23, 17, 47, 621431000 ],
+  "timestamp" : [ 2023, 8, 19, 0, 29, 16, 513537000 ],
   "message" : "주문을 조회하였습니다.",
   "data" : {
     "orderCode" : "orderCode",
@@ -1949,11 +1949,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 144
+Content-Length: 143
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 18, 23, 17, 47, 583654000 ],
+  "timestamp" : [ 2023, 8, 19, 0, 29, 16, 471352000 ],
   "message" : "주문에 대한 총 금액 : ",
   "data" : 150000
 }</code></pre>
@@ -2027,11 +2027,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 144
+Content-Length: 143
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 18, 23, 17, 47, 596454000 ],
+  "timestamp" : [ 2023, 8, 19, 0, 29, 16, 483478000 ],
   "message" : "주문에 대한 총 금액 : ",
   "data" : 150000
 }</code></pre>

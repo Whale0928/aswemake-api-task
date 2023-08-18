@@ -265,19 +265,21 @@ class ItemControllerRestDocsTest extends RestDocsSupport {
     @DisplayName("특정 시점 아이템 조회")
     void selectItemPriceAtTime() throws Exception {
         Long id = 1L;
-        String date = "2021-10-10";
-
+        String date = "2023-07-18T23:57";
+        ItemPriceAtTimeResponseDto responseDto = ItemPriceAtTimeResponseDto.builder()
+                .id(1L)
+                .name("테스트 상품_AAA")
+                .date(date)
+                .price(8500L)
+                .currentPrice(11000L)
+                .build();
         GlobalResponse response = GlobalResponse.builder()
                 .status(OK)
                 .message("조회 성공")
-                .data(ItemPriceAtTimeResponseDto.builder()
-                        .id(1L)
-                        .name("테스트 상품_AAA")
-                        .date("2021-10-10")
-                        .price(8500)
-                        .currentPrice(11000)
-                        .build())
+                .data(responseDto)
                 .build();
+
+        when(itemService.selectItemPriceAtTime(any(Long.class), any(String.class))).thenReturn(responseDto);
 
         mockMvc.perform(get("/v1/items/{id}/price", id)
                         .param("date", date)
