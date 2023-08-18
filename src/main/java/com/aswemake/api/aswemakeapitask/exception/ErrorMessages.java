@@ -18,6 +18,7 @@ public enum ErrorMessages {
     ITEM_NOT_FOUND("상품을 찾을 수 없습니다."),
     ITEM_STOCK_NOT_ENOUGH("상품의 재고가 부족합니다."),
     ITEM_NAME_DUPLICATION("동일한 이름이 존재합니다."),
+    PRICE_MUSE_BE_NOT_NULL("가격은 null이 될 수 없습니다."),
     ITEM_PRICE_NOT_ENOUGH("상품의 가격이 부족합니다.");
 
     private final String message;

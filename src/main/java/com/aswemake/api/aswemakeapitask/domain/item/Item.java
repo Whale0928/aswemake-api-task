@@ -3,6 +3,8 @@ package com.aswemake.api.aswemakeapitask.domain.item;
 import com.aswemake.api.aswemakeapitask.common.entity.BaseEntity;
 import com.aswemake.api.aswemakeapitask.domain.coupon.Coupon;
 import com.aswemake.api.aswemakeapitask.domain.orders.OrderItem;
+import com.aswemake.api.aswemakeapitask.exception.CustomException;
+import com.aswemake.api.aswemakeapitask.exception.ErrorMessages;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,4 +46,14 @@ public class Item extends BaseEntity {
     @Builder.Default
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
     private List<PriceHistory> priceHistories = new ArrayList<>();
+
+    public void updatePrice(Long price) {
+        if (price == null) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, ErrorMessages.PRICE_MUSE_BE_NOT_NULL);
+        }
+        if (price <= 0) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, ErrorMessages.ITEM_PRICE_NOT_ENOUGH);
+        }
+        this.price = price;
+    }
 }

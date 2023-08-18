@@ -6,7 +6,6 @@ import com.aswemake.api.aswemakeapitask.dto.item.request.ItemCreateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.item.request.ItemUpdateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemDeleteResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemPriceAtTimeResponseDto;
-import com.aswemake.api.aswemakeapitask.dto.item.response.ItemUpdateResponseDto;
 import com.aswemake.api.aswemakeapitask.service.ItemService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,22 +40,9 @@ public class ItemController {
     public ResponseEntity<GlobalResponse> createItem(@Valid @RequestBody ItemCreateRequestDto request) throws Exception {
         return GlobalResponse.created(itemService.createItem(request));
     }
-
-    // TODO : PUT /items/{id}: 상품 가격 수정
     @PutMapping("{id}")
-    public ResponseEntity<GlobalResponse> updateItem(@PathVariable Long id, @Valid @RequestBody ItemUpdateRequestDto request) {
-        return ok(GlobalResponse.builder()
-                .status(HttpStatus.OK)
-                .message("CREATED")
-                .data(ItemUpdateResponseDto.builder()
-                        .id(1L)
-                        .name("테스트 상품_AAA")
-                        .beforePrice(1000)
-                        .afterPrice(1500)
-                        .stockQuantity(100)
-                        .remainingStockQuantity(60)
-                        .build())
-                .build());
+    public ResponseEntity<GlobalResponse> updateItem(@PathVariable Long id, @Valid @RequestBody ItemUpdateRequestDto request) throws Exception {
+        return GlobalResponse.ok(itemService.updateItem(id, request));
     }
 
     // TODO : DELETE /items/{id}: 상품 삭제

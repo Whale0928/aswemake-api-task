@@ -5,8 +5,10 @@ import com.aswemake.api.aswemakeapitask.domain.item.ItemHistoryRepository;
 import com.aswemake.api.aswemakeapitask.domain.item.ItemRepository;
 import com.aswemake.api.aswemakeapitask.domain.orders.OrderItem;
 import com.aswemake.api.aswemakeapitask.dto.item.request.ItemCreateRequestDto;
+import com.aswemake.api.aswemakeapitask.dto.item.request.ItemUpdateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemCreateResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemSelectResponseDto;
+import com.aswemake.api.aswemakeapitask.dto.item.response.ItemUpdateResponseDto;
 import com.aswemake.api.aswemakeapitask.exception.CustomException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -55,6 +57,27 @@ public class ItemService {
                 .name(item.getName())
                 .price(item.getPrice())
                 .stockQuantity(item.getStockQuantity())
+                .build();
+    }
+
+    @Transactional
+    public ItemUpdateResponseDto updateItem(Long id, ItemUpdateRequestDto request) throws Exception {
+
+        Item item = itemRepository.findByIdWithOrderItem(id)
+                .orElseThrow(() -> new Exception(new CustomException(NOT_FOUND, ITEM_NOT_FOUND)));
+        Long beforePrice = item.getPrice();
+        int totalCount = item.getOrderItems().stream().mapToInt(OrderItem::getQuantity).sum();
+
+        item.updatePrice(request.getPrice());
+        itemRepository.saveAndFlush(item);
+
+        return ItemUpdateResponseDto.builder()
+                .id(item.getId())
+                .name(item.getName())
+                .beforePrice(beforePrice)
+                .afterPrice(request.getPrice())
+                .stockQuantity(item.getStockQuantity())
+                .remainingStockQuantity(item.getStockQuantity() - totalCount)
                 .build();
     }
 }

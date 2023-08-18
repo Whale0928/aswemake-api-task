@@ -16,5 +16,5 @@ public class ItemUpdateRequestDto {
 
     @NotNull(message = "수정 대상 가격은 필수입니다.")
     @Min(value = 1, message = "상품 가격은 0보다 커야 합니다.")
-    private int price;
+    private Long price;
 }
