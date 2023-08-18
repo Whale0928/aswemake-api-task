@@ -9,4 +9,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     @Query("select i from Item i left join fetch i.orderItems oi where i.id = :id")
     Optional<Item> findByIdWithOrderItem(Long id);
+
+    Optional<Item> findByName(String name);
 }

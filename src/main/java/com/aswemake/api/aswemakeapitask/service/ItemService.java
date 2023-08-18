@@ -8,10 +8,13 @@ import com.aswemake.api.aswemakeapitask.dto.item.request.ItemCreateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemCreateResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemSelectResponseDto;
 import com.aswemake.api.aswemakeapitask.exception.CustomException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import static com.aswemake.api.aswemakeapitask.exception.ErrorMessages.ITEM_NAME_DUPLICATION;
 import static com.aswemake.api.aswemakeapitask.exception.ErrorMessages.ITEM_NOT_FOUND;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
@@ -33,12 +36,25 @@ public class ItemService {
                 .build();
     }
 
+    @Transactional
     public ItemCreateResponseDto createItem(ItemCreateRequestDto request) throws Exception {
+
+        itemRepository.findByName(request.getName())
+                .ifPresent(item -> {
+                    throw new CustomException(BAD_REQUEST, ITEM_NAME_DUPLICATION);
+                });
+
+        Item item = itemRepository.saveAndFlush(Item.builder()
+                .name(request.getName())
+                .price(request.getPrice())
+                .stockQuantity(request.getStockQuantity())
+                .build());
+
         return ItemCreateResponseDto.builder()
-                .id(1L)
-                .name("테스트 상품_AAA")
-                .price(1000)
-                .stockQuantity(100)
+                .id(item.getId())
+                .name(item.getName())
+                .price(item.getPrice())
+                .stockQuantity(item.getStockQuantity())
                 .build();
     }
 }

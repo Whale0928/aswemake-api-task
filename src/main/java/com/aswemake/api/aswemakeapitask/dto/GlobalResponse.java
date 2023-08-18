@@ -1,5 +1,6 @@
 package com.aswemake.api.aswemakeapitask.dto;
 
+import com.aswemake.api.aswemakeapitask.dto.item.response.ItemCreateResponseDto;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,23 @@ public class GlobalResponse {
                 .timestamp(LocalDateTime.now())
                 .message(message)
                 .data(data)
+                .build());
+    }
+
+    public static ResponseEntity<GlobalResponse> created(ItemCreateResponseDto item) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(GlobalResponse.builder()
+                .status(HttpStatus.CREATED)
+                .timestamp(LocalDateTime.now())
+                .message("CREATED")
+                .data(item)
+                .build());
+    }
+    public static ResponseEntity<GlobalResponse> created(String message,ItemCreateResponseDto item) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(GlobalResponse.builder()
+                .status(HttpStatus.CREATED)
+                .timestamp(LocalDateTime.now())
+                .message(message)
+                .data(item)
                 .build());
     }
 }

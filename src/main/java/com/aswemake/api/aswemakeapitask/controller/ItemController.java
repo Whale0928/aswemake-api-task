@@ -36,9 +36,10 @@ public class ItemController {
     public ResponseEntity<GlobalResponse> selectItem(@PathVariable Long id) throws Exception {
         return GlobalResponse.ok(itemService.selectItem(id));
     }
+
     @PostMapping
     public ResponseEntity<GlobalResponse> createItem(@Valid @RequestBody ItemCreateRequestDto request) throws Exception {
-        return GlobalResponse.ok(itemService.createItem(request));
+        return GlobalResponse.created(itemService.createItem(request));
     }
 
     // TODO : PUT /items/{id}: 상품 가격 수정

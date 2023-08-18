@@ -21,6 +21,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import java.time.LocalDateTime;
 
 import static java.time.LocalDateTime.now;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
@@ -107,10 +108,17 @@ class ItemControllerRestDocsTest extends RestDocsSupport {
     void createItem() throws Exception {
         Long id = 1L;
         String name = "생성된_상품_AAA";
-        int price = 12000;
+        Long price = 12000L;
         int stockQuantity = 100;
 
         ItemCreateRequestDto requestDto = ItemCreateRequestDto.builder()
+                .name(name)
+                .price(price)
+                .stockQuantity(stockQuantity)
+                .build();
+
+        ItemCreateResponseDto responseDto = ItemCreateResponseDto.builder()
+                .id(id)
                 .name(name)
                 .price(price)
                 .stockQuantity(stockQuantity)
@@ -121,13 +129,10 @@ class ItemControllerRestDocsTest extends RestDocsSupport {
                 .status(CREATED)
                 .timestamp(now())
                 .message("상품 생성 성공")
-                .data(ItemCreateResponseDto.builder()
-                        .id(id)
-                        .name("테스트 상품_AAA")
-                        .price(1000)
-                        .stockQuantity(100)
-                        .build())
+                .data(responseDto)
                 .build();
+
+        when(itemService.createItem(any(ItemCreateRequestDto.class))).thenReturn(responseDto);
 
         mockMvc.perform(post("/v1/items")
                         .content(objectMapper.writeValueAsString(requestDto))

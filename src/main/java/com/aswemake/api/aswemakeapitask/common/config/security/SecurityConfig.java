@@ -55,8 +55,9 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/v1/auth/**")).permitAll()
-                                .requestMatchers(new AntPathRequestMatcher("/v1/coupons/**","GET")).permitAll()
-                                .requestMatchers(new AntPathRequestMatcher("/v1/items/**")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/v1/coupons/**", "GET")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/v1/items/{id}", "GET")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/v1/items/", "POST")).hasRole("MARKET")
                                 .anyRequest().authenticated()
                 )
                 .build();
