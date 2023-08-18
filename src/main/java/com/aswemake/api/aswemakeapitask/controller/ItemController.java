@@ -40,7 +40,7 @@ public class ItemController {
     public ResponseEntity<GlobalResponse> createItem(@Valid @RequestBody ItemCreateRequestDto request) throws Exception {
         return GlobalResponse.created(itemService.createItem(request));
     }
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<GlobalResponse> updateItem(@PathVariable Long id, @Valid @RequestBody ItemUpdateRequestDto request) throws Exception {
         return GlobalResponse.ok(itemService.updateItem(id, request));
     }

@@ -3,6 +3,7 @@ package com.aswemake.api.aswemakeapitask.service;
 import com.aswemake.api.aswemakeapitask.domain.item.Item;
 import com.aswemake.api.aswemakeapitask.domain.item.ItemHistoryRepository;
 import com.aswemake.api.aswemakeapitask.domain.item.ItemRepository;
+import com.aswemake.api.aswemakeapitask.domain.item.PriceHistory;
 import com.aswemake.api.aswemakeapitask.domain.orders.OrderItem;
 import com.aswemake.api.aswemakeapitask.dto.item.request.ItemCreateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.item.request.ItemUpdateRequestDto;
@@ -14,8 +15,13 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
+import static com.aswemake.api.aswemakeapitask.domain.item.PriceChangeStatus.DECREASED;
+import static com.aswemake.api.aswemakeapitask.domain.item.PriceChangeStatus.INCREASED;
 import static com.aswemake.api.aswemakeapitask.exception.ErrorMessages.ITEM_NAME_DUPLICATION;
 import static com.aswemake.api.aswemakeapitask.exception.ErrorMessages.ITEM_NOT_FOUND;
+import static com.aswemake.api.aswemakeapitask.exception.ErrorMessages.ITEM_PRICE_NOT_CHANGED;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -62,14 +68,28 @@ public class ItemService {
 
     @Transactional
     public ItemUpdateResponseDto updateItem(Long id, ItemUpdateRequestDto request) throws Exception {
-
         Item item = itemRepository.findByIdWithOrderItem(id)
                 .orElseThrow(() -> new Exception(new CustomException(NOT_FOUND, ITEM_NOT_FOUND)));
+
         Long beforePrice = item.getPrice();
+
+        if (request.getPrice().equals(beforePrice)) {
+            throw new CustomException(BAD_REQUEST, ITEM_PRICE_NOT_CHANGED);
+        }
+
         int totalCount = item.getOrderItems().stream().mapToInt(OrderItem::getQuantity).sum();
 
         item.updatePrice(request.getPrice());
         itemRepository.saveAndFlush(item);
+
+        PriceHistory priceHistory = PriceHistory.builder()
+                .item(item)
+                .price(item.getPrice())
+                .priceChangeStatus(beforePrice < request.getPrice() ? INCREASED : DECREASED)
+                .changedDate(LocalDateTime.now())
+                .build();
+
+        itemHistoryRepository.saveAndFlush(priceHistory);
 
         return ItemUpdateResponseDto.builder()
                 .id(item.getId())
