@@ -61,7 +61,7 @@ public class Coupon extends BaseEntity {
     }
 
     //유효한 쿠폰인지 검증
-    public Boolean isUsed() {
+    public boolean isUsed() {
         //사용된 경우 ture 반환
         return orders != null;
     }

@@ -19,6 +19,8 @@ public enum ErrorMessages {
     COUPON_NOT_FOUND("쿠폰을 찾을 수 없습니다."),
     COUPON_ALREADY_USED("이미 사용된 쿠폰입니다."),
     COUPON_NOT_AVAILABLE("사용할 수 없는 쿠폰입니다."),
+    COUPON_DISCOUNTED_AMOUNT_EXCEEDS_ORDER_VALUE("쿠폰 할인 금액이 주문 금액을 초과합니다."),
+    COUPON_DISCOUNT_CANNOT_EXCEED_100("할인은 100%를 초과할 수 없습니다."),
 
     //Item
     ITEM_NOT_FOUND("상품을 찾을 수 없습니다."),
