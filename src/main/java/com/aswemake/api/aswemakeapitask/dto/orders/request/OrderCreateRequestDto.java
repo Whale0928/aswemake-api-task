@@ -2,6 +2,7 @@ package com.aswemake.api.aswemakeapitask.dto.orders.request;
 
 
 import com.aswemake.api.aswemakeapitask.domain.orders.PackingType;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -20,6 +21,7 @@ import java.util.List;
 public class OrderCreateRequestDto {
 
     @NotEmpty(message = "주문 상품 목록은 비어있을 수 없습니다.")
+    @Valid
     private List<OrderItemRequest> orderItems;
 
     private Long couponId;

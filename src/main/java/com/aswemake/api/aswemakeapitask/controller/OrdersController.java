@@ -35,7 +35,6 @@ public class OrdersController {
 
     private final OrdersService ordersService;
 
-    // TODO : POST /orders: 주문 생성
     @PostMapping
     public ResponseEntity<GlobalResponse> createOrder(@Valid @RequestBody OrderCreateRequestDto orderCreateRequestDto
             , HttpSession session) throws Exception {

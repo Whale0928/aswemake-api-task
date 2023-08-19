@@ -31,18 +31,21 @@ public class AuthController {
     private final AuthService service;
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
+
     @PostMapping("/users/login")
     public ResponseEntity<GlobalResponse> loginUser(@RequestBody LoginRequestDto loginRequestDto, HttpSession session) throws Exception {
         UserLoginInfo userInfo = service.loginByUser(loginRequestDto);
         authenticateUser(loginRequestDto, session, userInfo);
         return GlobalResponse.ok("사용자 로그인 성공", userInfo);
     }
+
     @PostMapping("/market/login")
     public ResponseEntity<GlobalResponse> loginMarket(@RequestBody @Valid LoginRequestDto loginRequestDto, HttpSession session) throws Exception {
         UserLoginInfo userInfo = service.loginByMarket(loginRequestDto);
         authenticateUser(loginRequestDto, session, userInfo);
         return GlobalResponse.ok("마켓 로그인 성공", userInfo);
     }
+
     private void authenticateUser(LoginRequestDto loginRequestDto, HttpSession session, UserLoginInfo userInfo) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequestDto.getEmail());
         Authentication token = new UsernamePasswordAuthenticationToken(loginRequestDto.getEmail(), loginRequestDto.getPassword(), userDetails.getAuthorities());
@@ -50,5 +53,6 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         userInfo.addSessionInfo(session.getId());
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
+        session.setAttribute("userInfo", userInfo);
     }
 }

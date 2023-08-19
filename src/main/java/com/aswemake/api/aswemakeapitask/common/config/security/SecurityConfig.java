@@ -58,6 +58,7 @@ public class SecurityConfig {
                                 .requestMatchers(new AntPathRequestMatcher("/v1/coupons/**", "GET")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/v1/items/{id}/**", "GET")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/v1/items/**")).hasRole("MARKET")
+                                .requestMatchers(new AntPathRequestMatcher("/v1/orders/**","POST")).hasRole("USER")
                                 .anyRequest().authenticated()
                 )
                 .build();
