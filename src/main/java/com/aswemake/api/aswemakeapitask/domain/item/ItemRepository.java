@@ -15,5 +15,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     Optional<Item> findByName(String name);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    Optional<Item> findByIdForUpdate(Long itemId);
+    @Query("SELECT i FROM Item i WHERE i.id = :id")
+    Optional<Item> findByIdForUpdate(Long id);
 }

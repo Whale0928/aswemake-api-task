@@ -33,7 +33,6 @@ class CouponCalculateTest {
     @Mock
     private CouponRepository couponRepository;
 
-
     private List<OrderItemRequest> createOrderItems() {
         return List.of(
                 OrderItemRequest.of(1L, 1000L, 1),
