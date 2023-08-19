@@ -2,6 +2,8 @@ package com.aswemake.api.aswemakeapitask.service;
 
 import com.aswemake.api.aswemakeapitask.domain.coupon.Coupon;
 import com.aswemake.api.aswemakeapitask.domain.coupon.CouponRepository;
+import com.aswemake.api.aswemakeapitask.domain.coupon.CouponScope;
+import com.aswemake.api.aswemakeapitask.domain.coupon.CouponType;
 import com.aswemake.api.aswemakeapitask.domain.orders.OrderStatus;
 import com.aswemake.api.aswemakeapitask.domain.orders.Orders;
 import com.aswemake.api.aswemakeapitask.domain.orders.OrdersRepository;
@@ -17,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.aswemake.api.aswemakeapitask.exception.ErrorMessages.COUPON_ALREADY_USED;
+import static com.aswemake.api.aswemakeapitask.exception.ErrorMessages.COUPON_NOT_AVAILABLE;
 import static com.aswemake.api.aswemakeapitask.exception.ErrorMessages.COUPON_NOT_FOUND;
 import static com.aswemake.api.aswemakeapitask.exception.ErrorMessages.USER_NOT_FOUND;
 
@@ -73,16 +77,63 @@ public class OrdersService {
                 .build();
     }
 
-    //주문 번호 생성의 경우 클래스 분리여지가 크기 때문에 public 구현
     public String createOrderCode() {
         return "2021090001-market-AA";
     }
 
-    private Long calculateTotalPrice(List<OrderCreateRequestDto.OrderItemRequest> orderItems, Long couponId) {
+    public Long calculateTotalPrice(List<OrderCreateRequestDto.OrderItemRequest> orderItems, Long couponId) {
         Coupon coupon = couponRepository.findByIdWithItemAndOrders(couponId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, COUPON_NOT_FOUND));
-        //쿠폰 가격을 고려해 총 계산 금액
-        return 150_000L;
+
+        if (coupon.isUsed()) throw new CustomException(HttpStatus.BAD_REQUEST, COUPON_ALREADY_USED);
+
+        CouponScope couponScope = coupon.getCouponScope();
+        CouponType couponType = coupon.getCouponType();
+        Double discountValue = coupon.getDiscountValue();
+
+        return switch (couponScope) {
+            case ALL_ORDER -> calculateTotalPriceWithCoupon(orderItems, couponType, discountValue);
+            case SPECIFIC_ITEM -> calculateTotalPriceWithCouponAndItem(orderItems, coupon, couponType, discountValue);
+            default -> orderItems.stream()
+                    .mapToLong(item -> item.getPrice() * item.getQuantity())
+                    .sum();
+        };
     }
+
+    private Long calculateTotalPriceWithCoupon(List<OrderCreateRequestDto.OrderItemRequest> orderItems, CouponType couponType, Double discountValue) {
+        long originalTotal = orderItems.stream()
+                .mapToLong(item -> item.getPrice() * item.getQuantity())
+                .sum();
+
+        return switch (couponType) {
+            case PERCENTAGE -> originalTotal - (long) (originalTotal * (discountValue / 100));
+            case FIXED -> Math.max(originalTotal - discountValue.longValue(), 0);
+            default -> throw new CustomException(HttpStatus.BAD_REQUEST, COUPON_NOT_AVAILABLE);
+        };
+    }
+
+    private Long calculateTotalPriceWithCouponAndItem(List<OrderCreateRequestDto.OrderItemRequest> orderItems, Coupon coupon, CouponType couponType, Double discountValue) {
+        long originalTotal = 0;
+        long applicableTotal = 0;
+
+        for (OrderCreateRequestDto.OrderItemRequest item : orderItems) {
+            long itemTotal = item.getPrice() * item.getQuantity();
+            originalTotal += itemTotal;
+
+            if (item.getItemId().equals(coupon.getItem().getId())) {
+                applicableTotal += itemTotal;
+            }
+        }
+
+        return switch (couponType) {
+            case PERCENTAGE -> {
+                Long discountForApplicableItems = (long) (applicableTotal * (discountValue / 100));
+                yield originalTotal - discountForApplicableItems;
+            }
+            case FIXED -> Math.max(originalTotal - discountValue.longValue(), 0);
+            default -> throw new IllegalArgumentException("Unsupported coupon type");
+        };
+    }
+
 }
 

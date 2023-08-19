@@ -59,4 +59,10 @@ public class Coupon extends BaseEntity {
         item.getCoupons().remove(this);
         this.item = null;
     }
+
+    //유효한 쿠폰인지 검증
+    public Boolean isUsed() {
+        //사용된 경우 ture 반환
+        return orders != null;
+    }
 }

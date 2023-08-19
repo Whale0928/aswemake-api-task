@@ -17,6 +17,8 @@ public enum ErrorMessages {
 
     //Coupon
     COUPON_NOT_FOUND("쿠폰을 찾을 수 없습니다."),
+    COUPON_ALREADY_USED("이미 사용된 쿠폰입니다."),
+    COUPON_NOT_AVAILABLE("사용할 수 없는 쿠폰입니다."),
 
     //Item
     ITEM_NOT_FOUND("상품을 찾을 수 없습니다."),
