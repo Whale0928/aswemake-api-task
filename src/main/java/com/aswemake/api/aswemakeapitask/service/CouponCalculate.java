@@ -4,7 +4,7 @@ import com.aswemake.api.aswemakeapitask.domain.coupon.Coupon;
 import com.aswemake.api.aswemakeapitask.domain.coupon.CouponRepository;
 import com.aswemake.api.aswemakeapitask.domain.coupon.CouponScope;
 import com.aswemake.api.aswemakeapitask.domain.coupon.CouponType;
-import com.aswemake.api.aswemakeapitask.dto.orders.request.OrderCreateRequestDto;
+import com.aswemake.api.aswemakeapitask.dto.orders.request.OrderItemRequest;
 import com.aswemake.api.aswemakeapitask.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,7 @@ import static com.aswemake.api.aswemakeapitask.exception.ErrorMessages.COUPON_NO
 public class CouponCalculate {
     private final CouponRepository couponRepository;
 
-    public Long calculateTotalPrice(List<OrderCreateRequestDto.OrderItemRequest> orderItems, Long couponId) {
+    public Long calculateTotalPrice(List<OrderItemRequest> orderItems, Long couponId) {
         if (couponId == null)
             return orderItems.stream()
                     .mapToLong(item -> item.getPrice() * item.getQuantity())
@@ -48,7 +48,7 @@ public class CouponCalculate {
         };
     }
 
-    private Long calculateTotalPriceWithCoupon(List<OrderCreateRequestDto.OrderItemRequest> orderItems, CouponType couponType, Double discountValue) {
+    private Long calculateTotalPriceWithCoupon(List<OrderItemRequest> orderItems, CouponType couponType, Double discountValue) {
         long originalTotal = orderItems.stream()
                 .mapToLong(item -> item.getPrice() * item.getQuantity())
                 .sum();
@@ -76,11 +76,11 @@ public class CouponCalculate {
         }
     }
 
-    private Long calculateTotalPriceWithCouponAndItem(List<OrderCreateRequestDto.OrderItemRequest> orderItems, Coupon coupon, CouponType couponType, Double discountValue) {
+    private Long calculateTotalPriceWithCouponAndItem(List<OrderItemRequest> orderItems, Coupon coupon, CouponType couponType, Double discountValue) {
         long originalTotal = 0;
         long applicableTotal = 0;
 
-        for (OrderCreateRequestDto.OrderItemRequest item : orderItems) {
+        for (OrderItemRequest item : orderItems) {
             long itemTotal = item.getPrice() * item.getQuantity();
             originalTotal += itemTotal;
 

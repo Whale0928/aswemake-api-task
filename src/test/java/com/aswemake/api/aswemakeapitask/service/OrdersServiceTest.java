@@ -8,7 +8,7 @@ import com.aswemake.api.aswemakeapitask.domain.item.Item;
 import com.aswemake.api.aswemakeapitask.domain.orders.OrderStatus;
 import com.aswemake.api.aswemakeapitask.domain.orders.Orders;
 import com.aswemake.api.aswemakeapitask.domain.orders.PackingType;
-import com.aswemake.api.aswemakeapitask.dto.orders.request.OrderCreateRequestDto;
+import com.aswemake.api.aswemakeapitask.dto.orders.request.OrderItemRequest;
 import com.aswemake.api.aswemakeapitask.exception.CustomException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,21 +33,14 @@ class CouponCalculateTest {
     @Mock
     private CouponRepository couponRepository;
 
-    private OrderCreateRequestDto.OrderItemRequest createItemInfo(Long itemId, Long price, int quantity) {
-        return OrderCreateRequestDto.OrderItemRequest.builder()
-                .itemId(itemId)
-                .price(price)
-                .quantity(quantity)
-                .build();
-    }
 
-    private List<OrderCreateRequestDto.OrderItemRequest> createOrderItems() {
+    private List<OrderItemRequest> createOrderItems() {
         return List.of(
-                createItemInfo(1L, 1000L, 1),
-                createItemInfo(2L, 2000L, 2),
-                createItemInfo(3L, 3000L, 3),
-                createItemInfo(4L, 4000L, 4),
-                createItemInfo(5L, 5000L, 5)
+                OrderItemRequest.of(1L, 1000L, 1),
+                OrderItemRequest.of(2L, 2000L, 2),
+                OrderItemRequest.of(3L, 3000L, 3),
+                OrderItemRequest.of(4L, 4000L, 4),
+                OrderItemRequest.of(5L, 5000L, 5)
         );
         /*
         1 * 1000L = 1000L
@@ -63,7 +56,7 @@ class CouponCalculateTest {
     @Test
     @DisplayName("쿠폰 사용시 총 결제 금액 계산")
     void calculateTotalPriceTest_NotUsedCoupon() {
-        List<OrderCreateRequestDto.OrderItemRequest> orderItems = createOrderItems();
+        List<OrderItemRequest> orderItems = createOrderItems();
 
         // When
         Long totalAmount = orderItems.stream()
@@ -85,7 +78,7 @@ class CouponCalculateTest {
                 .couponScope(CouponScope.ALL_ORDER) // 전체 주문
                 .build();
         when(couponRepository.findByIdWithItemAndOrders(couponId)).thenReturn(Optional.of(coupon));
-        List<OrderCreateRequestDto.OrderItemRequest> orderItems = createOrderItems();
+        List<OrderItemRequest> orderItems = createOrderItems();
 
         // When
         Long totalAmount = couponCalculate.calculateTotalPrice(orderItems, couponId);
@@ -106,7 +99,7 @@ class CouponCalculateTest {
                 .couponScope(CouponScope.ALL_ORDER) // 전체 주문
                 .build();
         when(couponRepository.findByIdWithItemAndOrders(couponId)).thenReturn(Optional.of(coupon));
-        List<OrderCreateRequestDto.OrderItemRequest> orderItems = createOrderItems();
+        List<OrderItemRequest> orderItems = createOrderItems();
 
         // When
         Long totalAmount = couponCalculate.calculateTotalPrice(orderItems, couponId);
@@ -140,7 +133,7 @@ class CouponCalculateTest {
         // Correct the mocking behavior here
         when(couponRepository.findByIdWithItemAndOrders(couponId)).thenReturn(Optional.of(coupon));
 
-        List<OrderCreateRequestDto.OrderItemRequest> orderItems = createOrderItems();
+        List<OrderItemRequest> orderItems = createOrderItems();
 
         // When
         Long totalAmount = couponCalculate.calculateTotalPrice(orderItems, couponId);
@@ -162,7 +155,7 @@ class CouponCalculateTest {
                 .build();
 
         when(couponRepository.findByIdWithItemAndOrders(couponId)).thenReturn(Optional.of(coupon));
-        List<OrderCreateRequestDto.OrderItemRequest> orderItems = createOrderItems();
+        List<OrderItemRequest> orderItems = createOrderItems();
 
         // When & Then
         assertThrows(CustomException.class, () -> {
@@ -183,7 +176,7 @@ class CouponCalculateTest {
                 .build();
 
         when(couponRepository.findByIdWithItemAndOrders(couponId)).thenReturn(Optional.of(coupon));
-        List<OrderCreateRequestDto.OrderItemRequest> orderItems = createOrderItems();
+        List<OrderItemRequest> orderItems = createOrderItems();
 
         // When & Then
         assertThrows(CustomException.class, () -> {
@@ -215,7 +208,7 @@ class CouponCalculateTest {
                 .build();
 
         when(couponRepository.findByIdWithItemAndOrders(couponId)).thenReturn(Optional.of(coupon));
-        List<OrderCreateRequestDto.OrderItemRequest> orderItems = createOrderItems();
+        List<OrderItemRequest> orderItems = createOrderItems();
 
         // When & Then
         assertThrows(CustomException.class, () -> {

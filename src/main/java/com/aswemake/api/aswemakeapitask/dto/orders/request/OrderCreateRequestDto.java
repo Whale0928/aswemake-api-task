@@ -2,7 +2,6 @@ package com.aswemake.api.aswemakeapitask.dto.orders.request;
 
 
 import com.aswemake.api.aswemakeapitask.domain.orders.PackingType;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -38,20 +37,4 @@ public class OrderCreateRequestDto {
 
     @NotNull(message = "포장 타입은 필수입니다.")
     private PackingType packingType;
-
-    @Getter
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class OrderItemRequest {
-        @NotNull(message = "상품 ID는 필수입니다.")
-        private Long itemId;
-
-        @NotNull(message = "상품 단가는 필수입니다.")
-        private Long price;
-
-        @Min(value = 1, message = "수량은 1 이상이어야 합니다.")
-        @NotNull(message = "수량은 필수입니다.")
-        private int quantity;
-    }
 }

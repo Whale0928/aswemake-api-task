@@ -6,6 +6,7 @@ import com.aswemake.api.aswemakeapitask.domain.orders.PackingType;
 import com.aswemake.api.aswemakeapitask.domain.user.UserRole;
 import com.aswemake.api.aswemakeapitask.dto.orders.request.OrderCalculateTotalPriceRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.orders.request.OrderCreateRequestDto;
+import com.aswemake.api.aswemakeapitask.dto.orders.request.OrderItemRequest;
 import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderCreateResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderItemDto;
 import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderSelectResponseDto;
@@ -21,10 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.restdocs.payload.JsonFieldType;
 
-import java.util.AbstractMap;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.time.LocalDateTime.now;
 import static java.util.Arrays.asList;
@@ -72,33 +70,12 @@ class OrdersControllerRestDocsTest extends RestDocsSupport {
                 .build();
     }
 
-    private OrderCreateRequestDto.OrderItemRequest createOrderItem(Long id, Long price, int quantity) {
-        return OrderCreateRequestDto.OrderItemRequest.builder()
-                .itemId(id)
-                .price(price)
-                .quantity(quantity)
-                .build();
-    }
-
-    private List<OrderCreateRequestDto.OrderItemRequest> createOrderItems() {
+    private List<OrderItemRequest> createOrderItems() {
         return List.of(
-                createOrderItem(1L, 10_000L, 5),  // 1번 상품의 단가가 10,000원이라 가정
-                createOrderItem(2L, 15_000L, 10),  // 2번 상품의 단가가 15,000원이라 가정
-                createOrderItem(3L, 20_000L, 2)  // 3번 상품의 단가가 20,000원이라 가정
+                OrderItemRequest.of(1L, 10_000L, 5),  // 1번 상품의 단가가 10,000원이라 가정
+                OrderItemRequest.of(2L, 15_000L, 10),  // 2번 상품의 단가가 15,000원이라 가정
+                OrderItemRequest.of(3L, 20_000L, 2)  // 3번 상품의 단가가 20,000원이라 가정
         );
-    }
-
-
-    private List<OrderCalculateTotalPriceRequestDto.OrderItemRequest> createOrderItemsByTotalPrice() {
-        return Stream.of(
-                        new AbstractMap.SimpleEntry<>(1L, 5),
-                        new AbstractMap.SimpleEntry<>(2L, 10)
-                )
-                .map(entry -> OrderCalculateTotalPriceRequestDto.OrderItemRequest.builder()
-                        .itemId(entry.getKey())
-                        .quantity(entry.getValue())
-                        .build())
-                .collect(Collectors.toList());
     }
 
     @Test
@@ -107,7 +84,7 @@ class OrdersControllerRestDocsTest extends RestDocsSupport {
 
         UserLoginInfo userInfo = createTestUserInfo();
 
-        List<OrderCreateRequestDto.OrderItemRequest> orderItems = createOrderItems();
+        List<OrderItemRequest> orderItems = createOrderItems();
 
         // Request DTO
         OrderCreateRequestDto requestDto = OrderCreateRequestDto.builder()
@@ -233,7 +210,7 @@ class OrdersControllerRestDocsTest extends RestDocsSupport {
     @DisplayName("주문 총 금액 계산")
     void calculateTotalPrice() throws Exception {
         OrderCalculateTotalPriceRequestDto requestDto = OrderCalculateTotalPriceRequestDto.builder()
-                .orderItems(createOrderItemsByTotalPrice())
+                .orderItems(createOrderItems())
                 .build();
 
         mockMvc.perform(get("/v1/orders/total")
@@ -247,6 +224,7 @@ class OrdersControllerRestDocsTest extends RestDocsSupport {
                         requestFields(
                                 fieldWithPath("orderItems").description("주문 상품 목록"),
                                 fieldWithPath("orderItems[].itemId").description("주문 상품 아이디"),
+                                fieldWithPath("orderItems[].price").description("주문 상품 단가"),
                                 fieldWithPath("orderItems[].quantity").description("주문 상품 수량")
                         ),
                         responseFields(
