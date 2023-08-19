@@ -2,13 +2,14 @@ package com.aswemake.api.aswemakeapitask.controller;
 
 
 import com.aswemake.api.aswemakeapitask.domain.orders.OrderStatus;
+import com.aswemake.api.aswemakeapitask.domain.user.UserRole;
 import com.aswemake.api.aswemakeapitask.dto.GlobalResponse;
 import com.aswemake.api.aswemakeapitask.dto.orders.request.OrderCalculateTotalPriceRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.orders.request.OrderCreateRequestDto;
-import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderCreateResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderItemDto;
 import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderSelectResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.users.response.UserLoginInfo;
+import com.aswemake.api.aswemakeapitask.service.OrdersService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static java.time.LocalDateTime.now;
 import static java.util.Arrays.asList;
 
 @RequiredArgsConstructor
@@ -33,32 +33,22 @@ import static java.util.Arrays.asList;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class OrdersController {
 
+    private final OrdersService ordersService;
+
     // TODO : POST /orders: 주문 생성
     @PostMapping
     public ResponseEntity<GlobalResponse> createOrder(@Valid @RequestBody OrderCreateRequestDto orderCreateRequestDto
-            , HttpSession session) {
+            , HttpSession session) throws Exception {
 
-        // 세션에서 사용자 정보 가져오기
         UserLoginInfo userInfo = (UserLoginInfo) session.getAttribute("userInfo");
 
-        // 세션에서 사용자 정보가 없는 경우 (로그인하지 않은 경우)
-        if (userInfo.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(GlobalResponse.builder()
-                            .status(HttpStatus.UNAUTHORIZED)
-                            .message("로그인이 필요합니다.")
-                            .build());
-        }
+        if (userInfo.isEmpty())
+            return GlobalResponse.fail(HttpStatus.UNAUTHORIZED, "로그인 후 주문을 생겅할 수 있습니다.", orderCreateRequestDto);
 
-        // 주문 생성에 성공한 경우 응답 반환
-        return GlobalResponse.ok("주문이 생성되었습니다.",
-                OrderCreateResponseDto.builder()
-                        .id(1L)
-                        .orderCode("2021090001-market-AA")
-                        .orderStatus(OrderStatus.PAID)
-                        .totalAmount(150_000L)
-                        .orderDate(now())
-                        .build());
+        if (userInfo.getRole().equals(UserRole.MARKET))
+            return GlobalResponse.fail(HttpStatus.UNAUTHORIZED, "마켓은 주문을 생성할 수 없습니다.", orderCreateRequestDto);
+
+        return GlobalResponse.created("주문이 생성되었습니다.", ordersService.createOrder(orderCreateRequestDto, userInfo.getId()));
     }
 
     // TODO : GET /orders/{id}: 주문 정보 조회

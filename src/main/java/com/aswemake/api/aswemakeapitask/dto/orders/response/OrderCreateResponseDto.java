@@ -18,6 +18,12 @@ public class OrderCreateResponseDto {
     private Long id; // 생성된 주문의 ID
     private String orderCode; // 생성된 주문의 ID
     private OrderStatus orderStatus; // 주문 상태 (예: "주문 완료")
+
     private Long totalAmount; // 총 결제 금액
+    private Long deliveryFee; // 배달비
+
+    private String zipCode; // 배송지 우편번호
+    private String address; // 배송지 주소
+
     private LocalDateTime orderDate; // 주문 날짜 및 시간
 }

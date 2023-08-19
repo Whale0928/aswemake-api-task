@@ -617,7 +617,7 @@ Content-Length: 254
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 19, 0, 29, 16, 301615000 ],
+  "timestamp" : [ 2023, 8, 19, 15, 29, 9, 990808000 ],
   "message" : "사용자 로그인 성공",
   "data" : {
     "role" : "USER",
@@ -746,7 +746,7 @@ Content-Length: 251
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 19, 0, 29, 16, 240621000 ],
+  "timestamp" : [ 2023, 8, 19, 15, 29, 9, 934198000 ],
   "message" : "마켓 로그인 성공",
   "data" : {
     "role" : "MARKET",
@@ -859,7 +859,7 @@ Content-Length: 339
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 19, 0, 29, 16, 337560000 ],
+  "timestamp" : [ 2023, 8, 19, 15, 29, 10, 23743000 ],
   "message" : "쿠폰 정보 조회 성공",
   "data" : {
     "id" : 1,
@@ -993,7 +993,7 @@ Content-Length: 250
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 19, 0, 29, 16, 382048000 ],
+  "timestamp" : [ 2023, 8, 19, 15, 29, 10, 65476000 ],
   "message" : "성공",
   "data" : {
     "id" : 1,
@@ -1125,11 +1125,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 222
+Content-Length: 223
 
 {
   "status" : "CREATED",
-  "timestamp" : [ 2023, 8, 19, 0, 29, 16, 441068000 ],
+  "timestamp" : [ 2023, 8, 19, 15, 29, 10, 118218000 ],
   "message" : "CREATED",
   "data" : {
     "id" : 1,
@@ -1259,11 +1259,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 283
+Content-Length: 284
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 19, 0, 29, 16, 422670000 ],
+  "timestamp" : [ 2023, 8, 19, 15, 29, 10, 101188000 ],
   "message" : "성공",
   "data" : {
     "id" : 1,
@@ -1374,17 +1374,17 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 260
+Content-Length: 262
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 19, 0, 29, 16, 454190000 ],
+  "timestamp" : [ 2023, 8, 19, 15, 29, 10, 132277000 ],
   "message" : "성공",
   "data" : {
     "id" : 1,
     "name" : "테스트 상품_AAA",
     "remainingStockQuantity" : 60,
-    "deletedAt" : [ 2023, 8, 19, 0, 29, 16, 453500000 ]
+    "deletedAt" : [ 2023, 8, 19, 15, 29, 10, 131496000 ]
   }
 }</code></pre>
 </div>
@@ -1497,7 +1497,7 @@ Content-Length: 249
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 19, 0, 29, 16, 402078000 ],
+  "timestamp" : [ 2023, 8, 19, 15, 29, 10, 81485000 ],
   "message" : "성공",
   "data" : {
     "id" : 1,
@@ -1575,7 +1575,7 @@ Content-Length: 249
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/orders HTTP/1.1
 Content-Type: application/json
-Content-Length: 160
+Content-Length: 258
 Host: localhost:8080
 
 {
@@ -1586,8 +1586,11 @@ Host: localhost:8080
     "itemId" : 2,
     "quantity" : 10
   } ],
-  "coupons" : [ 1, 2 ],
-  "deliveryFee" : 5000
+  "couponId" : 1,
+  "zipCode" : "12345",
+  "address" : "서울시 강남구 장난동 101-12",
+  "deliveryFee" : 5000,
+  "packingType" : "Q_BAG"
 }</code></pre>
 </div>
 </div>
@@ -1630,10 +1633,28 @@ Host: localhost:8080
 <td class="tableblock halign-left valign-top"><p class="tableblock">주문 상품 수량</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>coupons</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>couponId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">사용 된 쿠폰 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>zipCode</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">배송지 우편번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>address</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">배송지 주소</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>packingType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">포장 타입</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>deliveryFee</code></p></td>
@@ -1648,23 +1669,26 @@ Host: localhost:8080
 <h4 id="_주문_생성_응답_정보"><a class="link" href="#_주문_생성_응답_정보">5.1.2. 주문 생성 응답 정보</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 312
+Content-Length: 426
 
 {
-  "status" : "OK",
-  "timestamp" : [ 2023, 8, 19, 0, 29, 16, 499119000 ],
+  "status" : "CREATED",
+  "timestamp" : [ 2023, 8, 19, 15, 29, 10, 188820000 ],
   "message" : "주문이 생성되었습니다.",
   "data" : {
     "id" : 1,
     "orderCode" : "2021090001-market-AA",
     "orderStatus" : "PAID",
     "totalAmount" : 150000,
-    "orderDate" : [ 2023, 8, 19, 0, 29, 16, 499106000 ]
+    "deliveryFee" : 3000,
+    "zipCode" : "12345",
+    "address" : "서울시 강남구 장난동 101-12",
+    "orderDate" : [ 2023, 8, 19, 15, 29, 10, 183455000 ]
   }
 }</code></pre>
 </div>
@@ -1710,7 +1734,25 @@ Content-Length: 312
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.totalAmount</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">사용자 이름</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">총 결제 금액</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.deliveryFee</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">배송비</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.zipCode</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">배송지 우편번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.address</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">배송지 주소</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderDate</code></p></td>
@@ -1761,11 +1803,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 497
+Content-Length: 498
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 19, 0, 29, 16, 513537000 ],
+  "timestamp" : [ 2023, 8, 19, 15, 29, 10, 201688000 ],
   "message" : "주문을 조회하였습니다.",
   "data" : {
     "orderCode" : "orderCode",
@@ -1949,11 +1991,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 143
+Content-Length: 144
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 19, 0, 29, 16, 471352000 ],
+  "timestamp" : [ 2023, 8, 19, 15, 29, 10, 162438000 ],
   "message" : "주문에 대한 총 금액 : ",
   "data" : 150000
 }</code></pre>
@@ -2027,11 +2069,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 143
+Content-Length: 144
 
 {
   "status" : "OK",
-  "timestamp" : [ 2023, 8, 19, 0, 29, 16, 483478000 ],
+  "timestamp" : [ 2023, 8, 19, 15, 29, 10, 173582000 ],
   "message" : "주문에 대한 총 금액 : ",
   "data" : 150000
 }</code></pre>

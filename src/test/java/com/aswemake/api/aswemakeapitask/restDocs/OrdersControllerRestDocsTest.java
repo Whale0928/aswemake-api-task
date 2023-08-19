@@ -2,16 +2,20 @@ package com.aswemake.api.aswemakeapitask.restDocs;
 
 import com.aswemake.api.aswemakeapitask.controller.OrdersController;
 import com.aswemake.api.aswemakeapitask.domain.orders.OrderStatus;
+import com.aswemake.api.aswemakeapitask.domain.orders.PackingType;
+import com.aswemake.api.aswemakeapitask.domain.user.UserRole;
 import com.aswemake.api.aswemakeapitask.dto.orders.request.OrderCalculateTotalPriceRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.orders.request.OrderCreateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderCreateResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderItemDto;
 import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderSelectResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.users.response.UserLoginInfo;
+import com.aswemake.api.aswemakeapitask.service.OrdersService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
@@ -24,6 +28,8 @@ import java.util.stream.Stream;
 
 import static java.time.LocalDateTime.now;
 import static java.util.Arrays.asList;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -48,9 +54,12 @@ class OrdersControllerRestDocsTest extends RestDocsSupport {
     @InjectMocks
     OrdersController ordersController;
 
+    @Mock
+    OrdersService ordersService;
+
     @Override
     protected Object initController() {
-        return new OrdersController();
+        return new OrdersController(ordersService);
     }
 
     private UserLoginInfo createTestUserInfo() {
@@ -59,20 +68,26 @@ class OrdersControllerRestDocsTest extends RestDocsSupport {
                 .email(TEST_EMAIL)
                 .name(TEST_NAME)
                 .sessionId(TEST_SESSION_ID)
+                .role(UserRole.USER)
+                .build();
+    }
+
+    private OrderCreateRequestDto.OrderItemRequest createOrderItem(Long id, Long price, int quantity) {
+        return OrderCreateRequestDto.OrderItemRequest.builder()
+                .itemId(id)
+                .price(price)
+                .quantity(quantity)
                 .build();
     }
 
     private List<OrderCreateRequestDto.OrderItemRequest> createOrderItems() {
-        return Stream.of(
-                        new AbstractMap.SimpleEntry<>(1L, 5),
-                        new AbstractMap.SimpleEntry<>(2L, 10)
-                )
-                .map(entry -> OrderCreateRequestDto.OrderItemRequest.builder()
-                        .itemId(entry.getKey())
-                        .quantity(entry.getValue())
-                        .build())
-                .collect(Collectors.toList());
+        return List.of(
+                createOrderItem(1L, 10_000L, 5),  // 1번 상품의 단가가 10,000원이라 가정
+                createOrderItem(2L, 15_000L, 10),  // 2번 상품의 단가가 15,000원이라 가정
+                createOrderItem(3L, 20_000L, 2)  // 3번 상품의 단가가 20,000원이라 가정
+        );
     }
+
 
     private List<OrderCalculateTotalPriceRequestDto.OrderItemRequest> createOrderItemsByTotalPrice() {
         return Stream.of(
@@ -89,12 +104,19 @@ class OrdersControllerRestDocsTest extends RestDocsSupport {
     @Test
     @DisplayName("주문 생성")
     void createOrder() throws Exception {
+
         UserLoginInfo userInfo = createTestUserInfo();
+
         List<OrderCreateRequestDto.OrderItemRequest> orderItems = createOrderItems();
+
+        // Request DTO
         OrderCreateRequestDto requestDto = OrderCreateRequestDto.builder()
                 .orderItems(orderItems)
+                .couponId(1L)
+                .zipCode("12345")
+                .address("서울시 강남구 장난동 101-12")
+                .packingType(PackingType.Q_BAG)
                 .deliveryFee(5000L)
-                .coupons(List.of(1L, 2L))
                 .build();
 
         MockHttpSession mockSession = new MockHttpSession();
@@ -105,23 +127,32 @@ class OrdersControllerRestDocsTest extends RestDocsSupport {
                 .orderCode("2021090001-market-AA")
                 .orderStatus(OrderStatus.PAID)
                 .totalAmount(150_000L)
+                .deliveryFee(3_000L)
+                .zipCode("12345")
+                .address("서울시 강남구 장난동 101-12")
                 .orderDate(now())
                 .build();
+
+        when(ordersService.createOrder(any(OrderCreateRequestDto.class), any(Long.class))).thenReturn(responseDto);
 
         mockMvc.perform(post("/v1/orders")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto))
                         .session(mockSession))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andDo(document("orders/create-order",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("orderItems").description("주문 상품 목록"),
                                 fieldWithPath("orderItems[].itemId").description("주문 상품 아이디"),
+                                fieldWithPath("orderItems[].price").description("주문 상품 단가"),
                                 fieldWithPath("orderItems[].quantity").description("주문 상품 수량"),
-                                fieldWithPath("coupons").description("사용 된 쿠폰 아이디").optional(),
+                                fieldWithPath("couponId").description("사용 된 쿠폰 아이디").optional(),
+                                fieldWithPath("zipCode").description("배송지 우편번호"),
+                                fieldWithPath("address").description("배송지 주소"),
+                                fieldWithPath("packingType").description("포장 타입").type(JsonFieldType.STRING),
                                 fieldWithPath("deliveryFee").description("배송비")
                         ),
                         responseFields(
@@ -132,7 +163,10 @@ class OrdersControllerRestDocsTest extends RestDocsSupport {
                                 fieldWithPath("data.id").description("주문 아이디").type(JsonFieldType.NUMBER),
                                 fieldWithPath("data.orderCode").description("주문 번호 ( 비지니스_키 ) "),
                                 fieldWithPath("data.orderStatus").description("주문 상태"),
-                                fieldWithPath("data.totalAmount").description("사용자 이름"),
+                                fieldWithPath("data.totalAmount").description("총 결제 금액"),
+                                fieldWithPath("data.deliveryFee").description("배송비"),
+                                fieldWithPath("data.zipCode").description("배송지 우편번호"),
+                                fieldWithPath("data.address").description("배송지 주소"),
                                 fieldWithPath("data.orderDate").description("구매 일시")
                         )
                 ));

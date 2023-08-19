@@ -40,6 +40,14 @@ public class Orders extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
+    // 배송지 정보
+    private String zipCode;
+    private String address;
+
+    // 포장 타입(큐백 or 일반)
+    @Enumerated(EnumType.STRING)
+    private PackingType packingType;
+
     // 총 결제 금액
     private Long totalAmount;
 
