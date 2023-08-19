@@ -56,4 +56,11 @@ public class Item extends BaseEntity {
         }
         this.price = price;
     }
+
+    public void decreaseStock(int quantity) {
+        if (this.stockQuantity < quantity) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, ErrorMessages.ITEM_STOCK_NOT_ENOUGH);
+        }
+        this.stockQuantity -= quantity;
+    }
 }
