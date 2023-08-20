@@ -66,5 +66,6 @@ class ItemStockServiceTest {
 
         OrderItemRequest orderItemRequest = OrderItemRequest.of(item.getId(), 5000L, 5);
         assertThrows(CustomException.class, () -> itemStockService.decreaseStock(Collections.singletonList(orderItemRequest)));
+
     }
 }
