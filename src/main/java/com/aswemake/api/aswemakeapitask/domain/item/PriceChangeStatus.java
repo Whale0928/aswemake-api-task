@@ -6,4 +6,5 @@ import lombok.Getter;
 public enum PriceChangeStatus {
     INCREASED,  // 가격이 증가함
     DECREASED,  // 가격이 감소함
+
 }

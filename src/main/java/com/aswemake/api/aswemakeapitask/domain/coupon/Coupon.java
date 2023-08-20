@@ -40,14 +40,15 @@ public class Coupon extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private CouponScope couponScope;
 
-    // 사용된 주문
-    @OneToOne(mappedBy = "coupon", cascade = CascadeType.ALL)
-    private Orders orders;
-
     // 특정 상품 한정 쿠폰의 경우, 해당 상품 정보
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
+
+    // 사용된 주문
+    @OneToOne(mappedBy = "coupon", cascade = CascadeType.ALL)
+    private Orders orders;
+
 
     public void addItem(Item item) {
         this.item = item;
@@ -57,5 +58,11 @@ public class Coupon extends BaseEntity {
     public void removeItem() {
         item.getCoupons().remove(this);
         this.item = null;
+    }
+
+    //유효한 쿠폰인지 검증
+    public boolean isUsed() {
+        //사용된 경우 ture 반환
+        return orders != null;
     }
 }

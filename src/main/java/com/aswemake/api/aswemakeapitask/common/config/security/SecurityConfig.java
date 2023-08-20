@@ -54,10 +54,18 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
-                                .requestMatchers(new AntPathRequestMatcher("/v1/auth/**")).permitAll()//로그인 허용
-                                //.requestMatchers(antMatcher(GET, "/market/**")).hasRole("MARKET")   //매장접근
+                                .requestMatchers(new AntPathRequestMatcher("/v1/auth/**")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/v1/coupons/**", "GET")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/v1/items/{id}/**", "GET")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/v1/items/**")).hasRole("MARKET")
+
+                                .requestMatchers(new AntPathRequestMatcher("/v1/orders/**","GET")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/v1/orders/**")).hasRole("USER")
                                 .anyRequest().authenticated()
                 )
                 .build();
     }
 }
+
+//.requestMatchers(antMatcher(GET, "/market/**")).hasRole("MARKET")   //매장접근
+//.requestMatchers(new AntPathRequestMatcher("/v1/auth/**")).permitAll()//로그인 허용

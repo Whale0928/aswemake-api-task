@@ -26,4 +26,14 @@ public class GlobalExceptionHandler {
                 .message(errorMessage)
                 .build(), HttpStatus.BAD_REQUEST);
     }
+
+    // CustomException 처리
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<GlobalResponse> handleCustomException(CustomException ex) {
+        return new ResponseEntity<>(GlobalResponse.builder()
+                .status(ex.getStatus())
+                .timestamp(timestamp)
+                .message(ex.getMessage())
+                .build(), ex.getStatus());
+    }
 }

@@ -24,4 +24,8 @@ public class UserLoginInfo {
     public boolean isEmpty() {
         return this.id == null;
     }
+    @JsonIgnore
+    public void addSessionInfo(String sessionId) {
+        this.sessionId = sessionId;
+    }
 }

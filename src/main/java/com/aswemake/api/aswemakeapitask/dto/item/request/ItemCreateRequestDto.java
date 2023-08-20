@@ -22,7 +22,7 @@ public class ItemCreateRequestDto {
 
     @NotNull(message = "상품 가격은 필수입니다.")
     @Min(value = 1, message = "상품 가격은 0보다 커야 합니다.")
-    private int price;
+    private Long price;
 
     @NotNull(message = "상품 재고 수량은 필수입니다.")
     @Min(value = 0, message = "상품 재고 수량은 0 이상이어야 합니다.")

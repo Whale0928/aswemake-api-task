@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class ItemSelectResponseDto {
     private Long id;
     private String name;
-    private int price;
+    private Long price;
     private int stockQuantity;
     private int remainingStockQuantity;   //남은 재고 수량
 }

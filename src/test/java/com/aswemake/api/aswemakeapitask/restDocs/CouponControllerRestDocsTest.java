@@ -4,16 +4,19 @@ import com.aswemake.api.aswemakeapitask.controller.CouponController;
 import com.aswemake.api.aswemakeapitask.domain.coupon.CouponScope;
 import com.aswemake.api.aswemakeapitask.dto.GlobalResponse;
 import com.aswemake.api.aswemakeapitask.dto.coupon.response.CouponResponseDto;
+import com.aswemake.api.aswemakeapitask.service.CouponService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.payload.JsonFieldType;
 
 import static com.aswemake.api.aswemakeapitask.domain.coupon.CouponType.FIXED;
 import static java.time.LocalDateTime.now;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
@@ -31,9 +34,12 @@ class CouponControllerRestDocsTest extends RestDocsSupport {
     @InjectMocks
     private CouponController couponController;
 
+    @Mock
+    private CouponService couponService;
+
     @Override
     protected Object initController() {
-        return new CouponController();
+        return new CouponController(couponService);
     }
 
     @Test
@@ -59,7 +65,7 @@ class CouponControllerRestDocsTest extends RestDocsSupport {
                 .message("쿠폰 정보 조회 성공")
                 .data(responseDto)
                 .build();
-
+        when(couponService.selectCoupon(id)).thenReturn(responseDto);
         mockMvc.perform(get("/v1/coupons/{id}", id)
                         .pathInfo("/v1/coupons/1")
                 )
