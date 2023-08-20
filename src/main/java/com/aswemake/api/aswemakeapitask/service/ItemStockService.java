@@ -27,8 +27,8 @@ public class ItemStockService {
             Item item = itemRepository.findByIdForUpdate(orderItem.getItemId())
                     .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, ErrorMessages.ITEM_NOT_FOUND));
 
-            // 재고 확인 및 감소
-            if (item.getStockQuantity() < orderItem.getQuantity())
+            // 재고 현 재고 확인 및 감소
+            if (item.getRemainingStockQuantity() < orderItem.getQuantity())
                 throw new CustomException(HttpStatus.NOT_FOUND, ErrorMessages.ITEM_STOCK_NOT_ENOUGH);
 
             item.decreaseStock(orderItem.getQuantity());

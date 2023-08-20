@@ -6,7 +6,7 @@ FROM CSVREAD('classpath:/sample-data/user.csv');
 
 INSERT
 INTO ITEM
-    (NAME, PRICE, STOCK_QUANTITY, CREATED_DATE, MODIFIED_DATE)
+    (NAME,PRICE,STOCK_QUANTITY,REMAINING_STOCK_QUANTITY)
 SELECT *
 FROM CSVREAD('classpath:/sample-data/item.csv');
 

@@ -54,7 +54,7 @@ public class CouponCalculate {
                 .sum();
 
         switch (couponType) {
-            case PERCENTAGE:
+            case PERCENTAGE -> {
                 if (discountValue > 100) {
                     throw new CustomException(HttpStatus.BAD_REQUEST, COUPON_DISCOUNT_CANNOT_EXCEED_100);
                 }
@@ -63,16 +63,15 @@ public class CouponCalculate {
                     throw new CustomException(HttpStatus.BAD_REQUEST, COUPON_DISCOUNTED_AMOUNT_EXCEEDS_ORDER_VALUE);
                 }
                 return originalTotal - discountedAmountPercentage;
-
-            case FIXED:
+            }
+            case FIXED -> {
                 long discountedAmountFixed = discountValue.longValue();
                 if (originalTotal - discountedAmountFixed < 0) {
                     throw new CustomException(HttpStatus.BAD_REQUEST, COUPON_DISCOUNTED_AMOUNT_EXCEEDS_ORDER_VALUE);
                 }
                 return originalTotal - discountedAmountFixed;
-
-            default:
-                throw new CustomException(HttpStatus.BAD_REQUEST, COUPON_NOT_AVAILABLE);
+            }
+            default -> throw new CustomException(HttpStatus.BAD_REQUEST, COUPON_NOT_AVAILABLE);
         }
     }
 

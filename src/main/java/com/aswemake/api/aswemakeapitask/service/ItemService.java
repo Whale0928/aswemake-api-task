@@ -40,13 +40,13 @@ public class ItemService {
     public ItemSelectResponseDto selectItem(Long id) throws Exception {
         Item item = itemRepository.findByIdWithOrderItem(id)
                 .orElseThrow(() -> new Exception(new CustomException(NOT_FOUND, ITEM_NOT_FOUND)));
-        int totalCount = item.getOrderItems().stream().mapToInt(OrderItem::getQuantity).sum();
+
         return ItemSelectResponseDto.builder()
                 .id(item.getId())
                 .name(item.getName())
                 .price(item.getPrice())
                 .stockQuantity(item.getStockQuantity())
-                .remainingStockQuantity(item.getStockQuantity() - totalCount)
+                .remainingStockQuantity(item.getRemainingStockQuantity())
                 .build();
     }
 
@@ -62,6 +62,7 @@ public class ItemService {
                 .name(request.getName())
                 .price(request.getPrice())
                 .stockQuantity(request.getStockQuantity())
+                .remainingStockQuantity(request.getStockQuantity())
                 .build());
 
         return ItemCreateResponseDto.builder()
@@ -113,7 +114,7 @@ public class ItemService {
                 .orElseThrow(() -> new Exception(new CustomException(NOT_FOUND, ITEM_NOT_FOUND)));
 
         String deletedItemName = item.getName();
-        int deleteAtQuantity = item.getStockQuantity() - item.getOrderItems().stream().mapToInt(OrderItem::getQuantity).sum();
+        int deleteAtQuantity = item.getRemainingStockQuantity();
 
         if (!item.getOrderItems().isEmpty()) {
             throw new CustomException(BAD_REQUEST, ITEM_DELETE_NOT_POSSIBLE);
@@ -147,6 +148,4 @@ public class ItemService {
                 .currentPrice(item.getPrice())
                 .build();
     }
-
-
 }

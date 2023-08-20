@@ -31,6 +31,8 @@ public class Item extends BaseEntity {
     private Long price;
     // 상품 재고 수량
     private int stockQuantity;
+    // 상품 현재고 수량
+    private int remainingStockQuantity;
 
     // 주문한 상품들의 목록
     @Builder.Default
@@ -58,9 +60,9 @@ public class Item extends BaseEntity {
     }
 
     public void decreaseStock(int quantity) {
-        if (this.stockQuantity < quantity) {
+        if (this.remainingStockQuantity < quantity) {
             throw new CustomException(HttpStatus.BAD_REQUEST, ErrorMessages.ITEM_STOCK_NOT_ENOUGH);
         }
-        this.stockQuantity -= quantity;
+        this.remainingStockQuantity -= quantity;
     }
 }
