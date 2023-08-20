@@ -65,5 +65,6 @@ public class AuthService {
                     return new CustomException(NOT_FOUND, USER_NOT_FOUND);
                 });
     }
+
 }
 

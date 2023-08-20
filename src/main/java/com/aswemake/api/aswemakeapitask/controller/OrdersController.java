@@ -35,7 +35,7 @@ public class OrdersController {
         UserLoginInfo userInfo = (UserLoginInfo) session.getAttribute("userInfo");
 
         if (userInfo.isEmpty())
-            return GlobalResponse.fail(HttpStatus.UNAUTHORIZED, "로그인 후 주문을 생겅할 수 있습니다.", orderCreateRequestDto);
+            return GlobalResponse.fail(HttpStatus.UNAUTHORIZED, "로그인 후 주문을 생성할 수 있습니다.", orderCreateRequestDto);
 
         if (userInfo.getRole().equals(UserRole.MARKET))
             return GlobalResponse.fail(HttpStatus.UNAUTHORIZED, "마켓은 주문을 생성할 수 없습니다.", orderCreateRequestDto);

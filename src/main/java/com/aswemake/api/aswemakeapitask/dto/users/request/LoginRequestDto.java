@@ -22,7 +22,7 @@ public class LoginRequestDto {
 
 
     //테스트용 허용 1자리
-    @Size(min = 1, max = 20, message = "비밀번호는 8자 이상 20자 이하로 입력해주세요.")
+    @Size(min = 6, max = 20, message = "비밀번호는 8자 이상 20자 이하로 입력해주세요.")
     @NotBlank(message = "비밀번호를 입력해주세요.")
     private String password;
 }

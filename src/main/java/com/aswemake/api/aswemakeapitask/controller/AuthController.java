@@ -33,7 +33,7 @@ public class AuthController {
     private final UserDetailsService userDetailsService;
 
     @PostMapping("/users/login")
-    public ResponseEntity<GlobalResponse> loginUser(@RequestBody LoginRequestDto loginRequestDto, HttpSession session) throws Exception {
+    public ResponseEntity<GlobalResponse> loginUser(@RequestBody @Valid LoginRequestDto loginRequestDto, HttpSession session) throws Exception {
         UserLoginInfo userInfo = service.loginByUser(loginRequestDto);
         authenticateUser(loginRequestDto, session, userInfo);
         return GlobalResponse.ok("사용자 로그인 성공", userInfo);

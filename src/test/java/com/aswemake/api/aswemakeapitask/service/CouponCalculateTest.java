@@ -41,15 +41,6 @@ class CouponCalculateTest {
                 OrderItemRequest.of(4L, 4000L, 4),
                 OrderItemRequest.of(5L, 5000L, 5)
         );
-        /*
-        1 * 1000L = 1000L
-        2 * 2000L = 4000L
-        3 * 3000L = 9000L
-        4 * 4000L = 16000L
-        5 * 5000L = 25000L
-        1000L + 4000L + 9000L + 16000L + 25000L = 55000L
-        So, the total sum is 55,000L.
-        */
     }
 
     @Test

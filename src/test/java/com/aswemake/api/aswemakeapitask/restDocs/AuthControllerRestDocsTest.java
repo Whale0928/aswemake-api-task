@@ -77,6 +77,7 @@ class AuthControllerRestDocsTest extends RestDocsSupport {
 
         when(userDetailsService.loadUserByUsername(anyString())).thenReturn(userDetails);
         when(authenticationManager.authenticate(any())).thenReturn(mock(Authentication.class));
+
         mockMvc.perform(post("/v1/auth/users/login")
                         .content(objectMapper.writeValueAsString(requestDto))
                         .contentType(APPLICATION_JSON))
