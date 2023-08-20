@@ -108,7 +108,7 @@ public class OrdersService {
     }
 
     public Long calculateTotalPrice(OrderCalculateTotalPriceRequestDto totalPriceRequestDto) {
-        return totalPriceRequestDto.getOrderItems().stream().mapToLong(item -> item.getPrice() * item.getQuantity()).sum();
+        return totalPriceRequestDto.getOrderItems().stream().mapToLong(item -> item.getPrice() * item.getQuantity()).sum() + totalPriceRequestDto.getDeliveryFee();
     }
 
     public Long calculatePaymentPrice(Long id) {

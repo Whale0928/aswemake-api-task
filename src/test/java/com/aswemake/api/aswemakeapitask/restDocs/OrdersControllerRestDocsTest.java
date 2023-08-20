@@ -211,6 +211,7 @@ class OrdersControllerRestDocsTest extends RestDocsSupport {
     void calculateTotalPrice() throws Exception {
         OrderCalculateTotalPriceRequestDto requestDto = OrderCalculateTotalPriceRequestDto.builder()
                 .orderItems(createOrderItems())
+                .deliveryFee(3000L)
                 .build();
 
         mockMvc.perform(get("/v1/orders/total")
@@ -225,7 +226,8 @@ class OrdersControllerRestDocsTest extends RestDocsSupport {
                                 fieldWithPath("orderItems").description("주문 상품 목록"),
                                 fieldWithPath("orderItems[].itemId").description("주문 상품 아이디"),
                                 fieldWithPath("orderItems[].price").description("주문 상품 단가"),
-                                fieldWithPath("orderItems[].quantity").description("주문 상품 수량")
+                                fieldWithPath("orderItems[].quantity").description("주문 상품 수량"),
+                                fieldWithPath("deliveryFee").description("배송비")
                         ),
                         responseFields(
                                 fieldWithPath("status").ignored(),

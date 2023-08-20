@@ -17,4 +17,6 @@ import java.util.List;
 public class OrderCalculateTotalPriceRequestDto {
     @NotEmpty(message = "주문 상품 목록은 비어있을 수 없습니다.")
     private List<OrderItemRequest> orderItems;
+
+    private Long deliveryFee;
 }
