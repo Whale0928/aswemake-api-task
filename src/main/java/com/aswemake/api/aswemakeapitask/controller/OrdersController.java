@@ -48,11 +48,11 @@ public class OrdersController {
         return GlobalResponse.ok("주문을 조회하였습니다.", ordersService.selectOrder(id));
     }
 
-    // TODO : GET /orders/total: 주문에 대한 총 금액 계산 - 결제전
+
     @GetMapping("/total")
     public ResponseEntity<GlobalResponse> calculateTotalPrice(@Valid @RequestBody OrderCalculateTotalPriceRequestDto orderCalculateTotalPriceRequestDto) {
-        Integer totalAmount = 150_000;
-        return GlobalResponse.ok("주문에 대한 총 금액 : ", totalAmount);
+
+        return GlobalResponse.ok("주문에 대한 총 금액 : ", ordersService.calculateTotalPrice(orderCalculateTotalPriceRequestDto));
     }
 
     // TODO : GET /orders/{id}/amount: 주문에 대한 필요 결제 금액 계산 - 결제 후

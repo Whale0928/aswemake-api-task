@@ -5,6 +5,7 @@ import com.aswemake.api.aswemakeapitask.domain.orders.Orders;
 import com.aswemake.api.aswemakeapitask.domain.orders.OrdersRepository;
 import com.aswemake.api.aswemakeapitask.domain.user.UserRepository;
 import com.aswemake.api.aswemakeapitask.domain.user.Users;
+import com.aswemake.api.aswemakeapitask.dto.orders.request.OrderCalculateTotalPriceRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.orders.request.OrderCreateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderCreateResponseDto;
 import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderItemDto;
@@ -104,6 +105,10 @@ public class OrdersService {
                 .deliveryFee(orders.getDeliveryFee())
                 .orderItems(list)
                 .build();
+    }
+
+    public Long calculateTotalPrice(OrderCalculateTotalPriceRequestDto totalPriceRequestDto) {
+        return totalPriceRequestDto.getOrderItems().stream().mapToLong(item -> item.getPrice() * item.getQuantity()).sum();
     }
 }
 
