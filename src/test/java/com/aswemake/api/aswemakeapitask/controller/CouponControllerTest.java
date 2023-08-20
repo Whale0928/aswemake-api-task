@@ -38,7 +38,7 @@ class CouponControllerTest extends RestDocsSupport {
     }
 
     @Test
-    @DisplayName("존재하는 쿠폰 ID로 쿠폰 정보 조회")
+    @DisplayName("존재하는 쿠폰 ID로 쿠폰 정보 조회할 수 있다.")
     public void selectCoupon_With_Valid_Id() throws Exception {
         Long id = 1L;
         CouponResponseDto responseDto = CouponResponseDto
@@ -68,7 +68,7 @@ class CouponControllerTest extends RestDocsSupport {
     }
 
     @Test
-    @DisplayName("존재하지 않는 쿠폰 ID로 쿠폰 정보 조회")
+    @DisplayName("존재하지 않는 쿠폰 ID로 쿠폰 정보 조회시 예외가 발생한다.")
     public void selectCoupon_With_Invalid_Id() throws Exception {
         when(couponService.selectCoupon(999L)).thenThrow(new CustomException(NOT_FOUND, COUPON_NOT_FOUND));
 
@@ -79,7 +79,7 @@ class CouponControllerTest extends RestDocsSupport {
     }
 
     @Test
-    @DisplayName("잘못된 형식의 쿠폰 ID로 쿠폰 정보 조회")
+    @DisplayName("잘못된 형식의 쿠폰 ID로 쿠폰 정보 조회시 예외가 발생한다.")
     public void selectCoupon_With_Invalid_Id_Format() throws Exception {
         // 문자열 형식의 쿠폰 ID로 요청
         String invalidId = "invalidId";

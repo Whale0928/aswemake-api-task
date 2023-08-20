@@ -5,7 +5,6 @@ import com.aswemake.api.aswemakeapitask.domain.item.Item;
 import com.aswemake.api.aswemakeapitask.domain.item.ItemHistoryRepository;
 import com.aswemake.api.aswemakeapitask.domain.item.ItemRepository;
 import com.aswemake.api.aswemakeapitask.domain.item.PriceHistory;
-import com.aswemake.api.aswemakeapitask.domain.orders.OrderItem;
 import com.aswemake.api.aswemakeapitask.dto.item.request.ItemCreateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.item.request.ItemUpdateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.item.response.ItemCreateResponseDto;
@@ -84,8 +83,6 @@ public class ItemService {
             throw new CustomException(BAD_REQUEST, ITEM_PRICE_NOT_CHANGED);
         }
 
-        int totalCount = item.getOrderItems().stream().mapToInt(OrderItem::getQuantity).sum();
-
         item.updatePrice(request.getPrice());
         itemRepository.saveAndFlush(item);
 
@@ -104,7 +101,7 @@ public class ItemService {
                 .beforePrice(beforePrice)
                 .afterPrice(request.getPrice())
                 .stockQuantity(item.getStockQuantity())
-                .remainingStockQuantity(item.getStockQuantity() - totalCount)
+                .remainingStockQuantity(item.getRemainingStockQuantity())
                 .build();
     }
 
