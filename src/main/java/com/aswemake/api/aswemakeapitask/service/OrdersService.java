@@ -110,5 +110,14 @@ public class OrdersService {
     public Long calculateTotalPrice(OrderCalculateTotalPriceRequestDto totalPriceRequestDto) {
         return totalPriceRequestDto.getOrderItems().stream().mapToLong(item -> item.getPrice() * item.getQuantity()).sum();
     }
+
+    public Long calculatePaymentPrice(Long id) {
+        Orders orders = ordersRepository.findByIdForSelectOrder(id)
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, ORDER_NOT_FOUND));
+        return orders.getOrderItems()
+                .stream()
+                .mapToLong(oItem -> oItem.getItem().getPrice() * oItem.getQuantity())
+                .sum();
+    }
 }
 

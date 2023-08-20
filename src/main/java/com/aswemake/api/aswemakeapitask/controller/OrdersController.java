@@ -55,10 +55,8 @@ public class OrdersController {
         return GlobalResponse.ok("주문에 대한 총 금액 : ", ordersService.calculateTotalPrice(orderCalculateTotalPriceRequestDto));
     }
 
-    // TODO : GET /orders/{id}/amount: 주문에 대한 필요 결제 금액 계산 - 결제 후
     @GetMapping("{id}/amount")
     public ResponseEntity<GlobalResponse> calculatePaymentPrice(@PathVariable Long id) {
-        Integer totalAmount = 150_000;
-        return GlobalResponse.ok("주문에 대한 총 금액 : ", totalAmount);
+        return GlobalResponse.ok("주문에 대한 총 금액 : ", ordersService.calculatePaymentPrice(id));
     }
 }
