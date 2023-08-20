@@ -29,7 +29,10 @@ public enum ErrorMessages {
     PRICE_MUSE_BE_NOT_NULL("가격은 null이 될 수 없습니다."),
     ITEM_PRICE_NOT_CHANGED("가격이 기존과 동일합니다."),
     ITEM_DELETE_NOT_POSSIBLE("주문내역이 존재하는 상품은 삭제할 수 없습니다."),
-    ITEM_PRICE_NOT_ENOUGH("상품의 가격이 부족합니다.");
+    ITEM_PRICE_NOT_ENOUGH("상품의 가격이 부족합니다."),
+
+    //Orders
+    ORDER_NOT_FOUND("주문을 찾을 수 없습니다.");
 
     private final String message;
 }

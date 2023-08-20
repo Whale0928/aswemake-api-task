@@ -7,6 +7,8 @@ import com.aswemake.api.aswemakeapitask.domain.user.UserRepository;
 import com.aswemake.api.aswemakeapitask.domain.user.Users;
 import com.aswemake.api.aswemakeapitask.dto.orders.request.OrderCreateRequestDto;
 import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderCreateResponseDto;
+import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderItemDto;
+import com.aswemake.api.aswemakeapitask.dto.orders.response.OrderSelectResponseDto;
 import com.aswemake.api.aswemakeapitask.exception.CustomException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+import static com.aswemake.api.aswemakeapitask.exception.ErrorMessages.ORDER_NOT_FOUND;
 import static com.aswemake.api.aswemakeapitask.exception.ErrorMessages.USER_NOT_FOUND;
 import static com.aswemake.api.aswemakeapitask.service.CodeGenerator.createOrderCode;
 
@@ -77,6 +82,28 @@ public class OrdersService {
 
         //응답 객체 반환
         return getOrderCreateResponseDto(orders);
+    }
+
+    public OrderSelectResponseDto selectOrder(Long id) {
+        Orders orders = ordersRepository.findByIdForSelectOrder(id)
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, ORDER_NOT_FOUND));
+
+        List<OrderItemDto> list = orders.getOrderItems().stream().map(orderItem -> OrderItemDto.builder()
+                .id(orderItem.getId())
+                .name(orderItem.getItem().getName())
+                .quantity(orderItem.getQuantity())
+                .price(orderItem.getItem().getPrice())
+                .build()).toList();
+
+        return OrderSelectResponseDto.builder()
+                .orderCode(orders.getOrderCode())
+                .userId(orders.getUsers().getId())
+                .userName(orders.getUsers().getName())
+                .status(orders.getStatus())
+                .totalAmount(orders.getTotalAmount())
+                .deliveryFee(orders.getDeliveryFee())
+                .orderItems(list)
+                .build();
     }
 }
 

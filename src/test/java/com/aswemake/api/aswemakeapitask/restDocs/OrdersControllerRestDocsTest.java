@@ -176,7 +176,7 @@ class OrdersControllerRestDocsTest extends RestDocsSupport {
                 .orderItems(orderItemDtoList)
                 .build();
 
-
+        when(ordersService.selectOrder(any(Long.class))).thenReturn(responseDto);
         mockMvc.perform(get("/v1/orders/{id}", 1L))
                 .andDo(print())
                 .andExpect(status().isOk())
