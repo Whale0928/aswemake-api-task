@@ -1,8 +1,0 @@
-### 일반 사용자는 로그인 할 수 있다.
-POST http://localhost:8080/v1/auth/users/login
-Content-Type: application/json
-
-{
-  "email": "user@test.com",
-  "password": "qwe123"
-}
