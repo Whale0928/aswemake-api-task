@@ -2,20 +2,32 @@
 
 - `2023-08-14` ~ `2023-08-21`
 
+---
+
+### 사용 기술
+
+- Java 17
+- spring boot 3.1.2
+- spring data jpa
+- spring security
+- spring rest docs
+- Spring Validation
+- H2 Database
+
 ------
 
 ### 실행 방법
 
 1. **프로젝트 클론하기**
-   ```bash
-   git clone https://github.com/whale0928/aswemake-api-task.git
-   ```
+```bash
+    git clone https://github.com/whale0928/aswemake-api-task.git
+```
 
 2 **프로젝트 실행**
 
-   ```bash
+```bash
     ./gradlew bootRun
-   ```
+```
 
 3. **Http Client 설치 및 실행**
    > Http Client는 API를 테스트하고 검증하기 위한 도구로, 인텔리제이 IDE에 내장된 기능입니다.<br>
