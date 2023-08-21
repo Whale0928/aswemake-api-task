@@ -1,0 +1,378 @@
+openapi: "3.0.3"
+info:
+  title: "aswemake_api_task API"
+  description: "aswemake_api_task API"
+  version: "1.0.0"
+servers:
+  - url: "https://aswemake_api_task"
+paths:
+  /v1/auth/market/login:
+    post:
+      summary: "POST v1/auth/market/login"
+      operationId: "loginMarket"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequestDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/GlobalResponse"
+  /v1/auth/users/login:
+    post:
+      summary: "POST v1/auth/users/login"
+      operationId: "loginUser"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequestDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/GlobalResponse"
+  /v1/items:
+    post:
+      summary: "POST v1/items"
+      operationId: "createItem"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ItemCreateRequestDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/GlobalResponse"
+  /v1/items/{id}:
+    get:
+      summary: "GET v1/items/{id}"
+      operationId: "selectItem"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/GlobalResponse"
+    put:
+      summary: "PUT v1/items/{id}"
+      operationId: "updateItem"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ItemUpdateRequestDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/GlobalResponse"
+    delete:
+      summary: "DELETE v1/items/{id}"
+      operationId: "deleteItem"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/GlobalResponse"
+  /v1/items/{id}/price:
+    get:
+      summary: "GET v1/items/{id}/price"
+      operationId: "selectItemPriceAtTime"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/GlobalResponse"
+  /v1/orders:
+    post:
+      summary: "POST v1/orders"
+      operationId: "createOrder"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderCreateRequestDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/GlobalResponse"
+  /v1/orders/total:
+    get:
+      summary: "GET v1/orders/total"
+      operationId: "calculateTotalPrice"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderCalculateTotalPriceRequestDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/GlobalResponse"
+  /v1/orders/{id}:
+    get:
+      summary: "GET v1/orders/{id}"
+      operationId: "selectOrder"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/GlobalResponse"
+  /v1/orders/{id}/amount:
+    get:
+      summary: "GET v1/orders/{id}/amount"
+      operationId: "calculatePaymentPrice"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/GlobalResponse"
+  /v1/coupons/{id}:
+    get:
+      summary: "GET v1/coupons/{id}"
+      operationId: "selectCoupon"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/GlobalResponse"
+components:
+  schemas:
+    LoginRequestDto:
+      type: "object"
+      properties:
+        email:
+          type: "string"
+        password:
+          type: "string"
+    Object:
+      type: "object"
+      properties: { }
+    GlobalResponse:
+      type: "object"
+      properties:
+        status:
+          type: "string"
+          enum:
+            - "CONTINUE"
+            - "SWITCHING_PROTOCOLS"
+            - "PROCESSING"
+            - "EARLY_HINTS"
+            - "CHECKPOINT"
+            - "OK"
+            - "CREATED"
+            - "ACCEPTED"
+            - "NON_AUTHORITATIVE_INFORMATION"
+            - "NO_CONTENT"
+            - "RESET_CONTENT"
+            - "PARTIAL_CONTENT"
+            - "MULTI_STATUS"
+            - "ALREADY_REPORTED"
+            - "IM_USED"
+            - "MULTIPLE_CHOICES"
+            - "MOVED_PERMANENTLY"
+            - "FOUND"
+            - "MOVED_TEMPORARILY"
+            - "SEE_OTHER"
+            - "NOT_MODIFIED"
+            - "USE_PROXY"
+            - "TEMPORARY_REDIRECT"
+            - "PERMANENT_REDIRECT"
+            - "BAD_REQUEST"
+            - "UNAUTHORIZED"
+            - "PAYMENT_REQUIRED"
+            - "FORBIDDEN"
+            - "NOT_FOUND"
+            - "METHOD_NOT_ALLOWED"
+            - "NOT_ACCEPTABLE"
+            - "PROXY_AUTHENTICATION_REQUIRED"
+            - "REQUEST_TIMEOUT"
+            - "CONFLICT"
+            - "GONE"
+            - "LENGTH_REQUIRED"
+            - "PRECONDITION_FAILED"
+            - "PAYLOAD_TOO_LARGE"
+            - "REQUEST_ENTITY_TOO_LARGE"
+            - "URI_TOO_LONG"
+            - "REQUEST_URI_TOO_LONG"
+            - "UNSUPPORTED_MEDIA_TYPE"
+            - "REQUESTED_RANGE_NOT_SATISFIABLE"
+            - "EXPECTATION_FAILED"
+            - "I_AM_A_TEAPOT"
+            - "INSUFFICIENT_SPACE_ON_RESOURCE"
+            - "METHOD_FAILURE"
+            - "DESTINATION_LOCKED"
+            - "UNPROCESSABLE_ENTITY"
+            - "LOCKED"
+            - "FAILED_DEPENDENCY"
+            - "TOO_EARLY"
+            - "UPGRADE_REQUIRED"
+            - "PRECONDITION_REQUIRED"
+            - "TOO_MANY_REQUESTS"
+            - "REQUEST_HEADER_FIELDS_TOO_LARGE"
+            - "UNAVAILABLE_FOR_LEGAL_REASONS"
+            - "INTERNAL_SERVER_ERROR"
+            - "NOT_IMPLEMENTED"
+            - "BAD_GATEWAY"
+            - "SERVICE_UNAVAILABLE"
+            - "GATEWAY_TIMEOUT"
+            - "HTTP_VERSION_NOT_SUPPORTED"
+            - "VARIANT_ALSO_NEGOTIATES"
+            - "INSUFFICIENT_STORAGE"
+            - "LOOP_DETECTED"
+            - "BANDWIDTH_LIMIT_EXCEEDED"
+            - "NOT_EXTENDED"
+            - "NETWORK_AUTHENTICATION_REQUIRED"
+        timestamp:
+          type: "string"
+          format: "date-time"
+        message:
+          type: "string"
+        data:
+          $ref: "#/components/schemas/Object"
+    ItemCreateRequestDto:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        price:
+          type: "integer"
+          format: "int64"
+        stockQuantity:
+          type: "integer"
+          format: "int32"
+    ItemUpdateRequestDto:
+      type: "object"
+      properties:
+        price:
+          type: "integer"
+          format: "int64"
+    OrderItemRequest:
+      type: "object"
+      properties:
+        itemId:
+          type: "integer"
+          format: "int64"
+        price:
+          type: "integer"
+          format: "int64"
+        quantity:
+          type: "integer"
+          format: "int32"
+    OrderCreateRequestDto:
+      type: "object"
+      properties:
+        orderItems:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderItemRequest"
+        couponId:
+          type: "integer"
+          format: "int64"
+        zipCode:
+          type: "string"
+        address:
+          type: "string"
+        deliveryFee:
+          type: "integer"
+          format: "int64"
+        packingType:
+          type: "string"
+          enum:
+            - "Q_BAG"
+            - "NORMAL"
+    OrderCalculateTotalPriceRequestDto:
+      type: "object"
+      properties:
+        orderItems:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderItemRequest"
+        deliveryFee:
+          type: "integer"
+          format: "int64"

@@ -1,0 +1,65 @@
+
+# 어플리케이션 시작 후 동작 가능합니다.
+# ./gradlew bootRun
+# 더 여러 케이스의 경우 test 폴더에 있는 테스트 코드를 참고해주세요.
+
+
+### 사용자 로그인 상태에서 주문이 가능하다.
+POST http://localhost:8080/v1/auth/users/login
+Content-Type: application/json
+
+{
+  "email": "user@test.com",
+  "password": "qwe123"
+}
+
+### 사용자 고객은 주문이 가능하다.
+POST http://localhost:8080/v1/orders
+Content-Type: application/json
+
+{
+  "orderItems": [
+    {
+      "itemId": 1,
+      "price": 1000,
+      "quantity": 1
+    },
+    {
+      "itemId": 2,
+      "price": 1000,
+      "quantity": 2
+    }
+  ],
+  "couponId": 12,
+  "zipCode": "12345",
+  "address": "서울시 강남구 자양동 A빌딩-123",
+  "deliveryFee": 3000,
+  "packingType": "Q_BAG"
+}
+
+
+### 주문을 조회 할 수 있다.
+GET http://localhost:8080/v1/orders/1
+
+### 상품 가격들을 계산할 수 있다.
+GET http://localhost:8080/v1/orders/total
+Content-Type: application/json
+
+{
+  "orderItems": [
+    {
+      "itemId": 1,
+      "price": 1000,
+      "quantity": 1
+    },
+    {
+      "itemId": 2,
+      "price": 1000,
+      "quantity": 2
+    }
+  ],
+  "deliveryFee": 3000
+}
+
+### 주문된 내역의 결제 금액을 조회할 수 있따.
+GET http://localhost:8080/v1/orders/1/amount

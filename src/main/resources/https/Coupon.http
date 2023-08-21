@@ -1,0 +1,11 @@
+
+# 어플리케이션 시작 후 동작 가능합니다.
+# ./gradlew bootRun
+# 더 여러 케이스의 경우 test 폴더에 있는 테스트 코드를 참고해주세요.
+
+### 쿠폰을 조회할 수 있다.
+GET http://localhost:8080/v1/coupons/2
+
+
+### 존재하지 않는 쿠폰은 조회할 수 없다.
+GET http://localhost:8080/v1/coupons/999

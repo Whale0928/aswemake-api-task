@@ -1,0 +1,61 @@
+
+# 어플리케이션 시작 후 동작 가능합니다.
+# ./gradlew bootRun
+# 더 여러 케이스의 경우 test 폴더에 있는 테스트 코드를 참고해주세요.
+
+### 아이템을 조회할 수 있다.
+GET http://localhost:8080/v1/items/2
+
+### 존재하지 않는 아이템은 조회할 수 없다.
+GET http://localhost:8080/v1/items/999
+
+----------------------------------------------------------------
+
+### 사용자 로그인 상태에서는 아이템 정보를 제어할 수 없다.
+POST http://localhost:8080/v1/auth/users/login
+Content-Type: application/json
+
+{
+  "email": "user@test.com",
+  "password": "qwe123"
+}
+### 마켓 로그인 상태에서는 아이템 정보를 제어할 수 있다..
+POST http://localhost:8080/v1/auth/market/login
+Content-Type: application/json
+
+{
+  "email": "market@market.com",
+  "password": "qwe123"
+}
+
+### 아이템을 생성할 수 있다.
+## 동일한 요청 두번 진행 시 동일한 상품명이라 등록 실패
+POST http://localhost:8080/v1/items
+Content-Type: application/json
+
+{
+  "name": "아이템 이름",
+  "description": "아이템 설명",
+  "price": 1000
+}
+
+### 아이템을 수정할 수 있다.
+## 2번 아이템 기존 가격 10_000 -> 12_000 으로 수정
+PUT http://localhost:8080/v1/items/2
+Content-Type: application/json
+
+{
+  "price": 12000
+}
+
+### 아이템을 삭제할 수 있다.
+DELETE http://localhost:8080/v1/items/6
+
+### 주문 내역이 존재하면 아이템을 삭제할 수 없다.
+DELETE http://localhost:8080/v1/items/2
+
+
+### 특정 시점의 아이템 가격을 조회할 수 있다.
+## price 해당 시점 가격
+## currentPrice 현재 시점 가격
+GET http://localhost:8080/v1/items/1/price?date=2023-08-21T02:06:57
