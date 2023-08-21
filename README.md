@@ -16,9 +16,20 @@
 
 ------
 
+### API 명세
+
+#### [REST_DOCS 링크](https://whale0928.github.io/aswemake-api-task/)
+
+- rest docs 를 이용한 api 명세서
+- 테스트 기반으로 만들어진 API 엔드포인트 명세
+- Github_Pages 를 이용하여 배포중입니다.
+
+----
+
 ### 실행 방법
 
 1. **프로젝트 클론하기**
+
 ```bash
     git clone https://github.com/whale0928/aswemake-api-task.git
 ```
@@ -41,16 +52,6 @@
 - `resources/https/` 경로에 있는 파일들을 Http Client에서 열어 API 검증 및 테스트를 진행합니다.
 
 ------
-
-### API 명세
-
-#### [REST_DOCS 링크](https://whale0928.github.io/aswemake-api-task/)
-
-- rest docs 를 이용한 api 명세서
-- 테스트 기반으로 만들어진 API 엔드포인트 명세
-- Github_Pages 를 이용하여 배포중입니다.
-
-----
 
 ### 엔티티 설계
 
